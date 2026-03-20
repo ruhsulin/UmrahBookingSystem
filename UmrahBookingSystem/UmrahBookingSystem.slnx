@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="UmrahBookingSystem.Application/UmrahBookingSystem.Application.csproj" />
+  <Project Path="UmrahBookingSystem.Domain/UmrahBookingSystem.Domain.csproj" />
+  <Project Path="UmrahBookingSystem.Infrastructure/UmrahBookingSystem.Infrastructure.csproj" />
+  <Project Path="UmrahBookingSystem.Web/UmrahBookingSystem.Web.csproj" />
+</Solution>
