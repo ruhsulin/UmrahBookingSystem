@@ -1,0 +1,15 @@
+# Build outputs
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.slnx
+
+# Cache files
+*.vsidx
+*.v2
