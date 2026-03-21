@@ -19,9 +19,7 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore
-        working-directory: UmrahBookingSystem
+        run: dotnet restore UmrahBookingSystem/UmrahBookingSystem.slnx
 
       - name: Build
-        run: dotnet build --no-restore
-        working-directory: UmrahBookingSystem
+        run: dotnet build UmrahBookingSystem/UmrahBookingSystem.slnx --no-restore
