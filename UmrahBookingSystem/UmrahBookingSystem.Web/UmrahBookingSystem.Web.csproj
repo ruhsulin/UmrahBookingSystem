@@ -17,4 +17,15 @@
     <ProjectReference Include="..\UmrahBookingSystem.Application\UmrahBookingSystem.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Aeras\Admin\Controllers\" />
+    <Folder Include="Aeras\Admin\Views\" />
+    <Folder Include="Aeras\Admin\ViewModels\" />
+    <Folder Include="Aeras\Client\ViewModels\" />
+    <Folder Include="Aeras\Client\Views\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Hubs\" />
+    <Folder Include="Middleware\" />
+  </ItemGroup>
+
 </Project>

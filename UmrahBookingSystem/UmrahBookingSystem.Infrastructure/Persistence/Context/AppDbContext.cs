@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UmrahBookingSystem.Domain.Entities;
 
-namespace UmrahBookingSystem.Infrastructure.Data
+namespace UmrahBookingSystem.Infrastructure.Persistence.Context
 {
     public class AppDbContext : DbContext
     {
