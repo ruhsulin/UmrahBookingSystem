@@ -1,4 +1,4 @@
-namespace UmrahBookingSystem.Web.Models
+namespace UmrahBookingSystem.Web.ViewModels
 {
     public class ErrorViewModel
     {

@@ -7,7 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\UmrahBookingSystem.Application\UmrahBookingSystem.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Aeras\Admin\Controllers\" />
+    <Folder Include="Aeras\Admin\Views\" />
+    <Folder Include="Aeras\Admin\ViewModels\" />
+    <Folder Include="Aeras\Client\ViewModels\" />
+    <Folder Include="Aeras\Client\Views\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Hubs\" />
+    <Folder Include="Middleware\" />
   </ItemGroup>
 
 </Project>
