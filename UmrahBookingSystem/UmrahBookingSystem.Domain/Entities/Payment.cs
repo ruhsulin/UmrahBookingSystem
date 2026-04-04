@@ -3,12 +3,18 @@
     public class Payment
     {
         public int Id { get; set; }
-        public decimal Amount { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public string? PaymentMethod { get; set; }
-        public string? Status { get; set; }
-        public int BookingId { get; set; }
+        public required decimal Amount { get; set; }
+        public required DateTime PaymentDate { get; set; }
+        public required string PaymentMethod { get; set; }
+        public required string Status { get; set; }
+        public required string Type { get; set; }
+        public string? RecordedByAdminId { get; set; }
+        public string? StripePaymentIntentId { get; set; }
+
+        public required int BookingId { get; set; }
+
         // Navigation property
         public Booking Booking { get; set; } = null!;
+        public User? RecordedByAdmin { get; set; }
     }
 }
