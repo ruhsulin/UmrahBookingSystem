@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace UmrahBookingSystem.Domain.Entities
+﻿namespace UmrahBookingSystem.Domain.Entities
 {
     public class Country
     {
