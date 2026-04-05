@@ -1,11 +1,13 @@
-﻿namespace UmrahBookingSystem.Domain.Entities
+﻿using UmrahBookingSystem.Domain.Common;
+
+namespace UmrahBookingSystem.Domain.Entities
 {
-    public class BookingRoom
+    public class BookingRoom :BaseEntity
     {
         public int Id { get; set; }
-        public required int Quantity { get; set; }
-        public required int BookingId { get; set; }
-        public required int RoomId { get; set; }
+        public int Quantity { get; set; }
+        public int BookingId { get; set; }
+        public int RoomId { get; set; }
 
         // Navigation properties
         public Booking Booking { get; set; } = null!;
