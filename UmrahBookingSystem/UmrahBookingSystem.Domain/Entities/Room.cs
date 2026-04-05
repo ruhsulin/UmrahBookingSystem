@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using UmrahBookingSystem.Domain.Common;
 
 namespace UmrahBookingSystem.Domain.Entities
 {
-    public class Room
+    public class Room : BaseEntity
     {
         public int Id { get; set; }
         public int RoomType { get; set; }
         public decimal RoomPrice { get; set; }
-        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+
+        public ICollection<BookingRoom> BookingRooms { get; set; } = new List<BookingRoom>();
     }
 }

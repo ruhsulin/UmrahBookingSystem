@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using UmrahBookingSystem.Domain.Common;
 
 namespace UmrahBookingSystem.Domain.Entities
 {
-    public class Country
+    public class Country : BaseEntity
     {
         public int Id { get; set; }
-        public required string CountryName { get; set; }
+        public string CountryName { get; set; } = null!;
         public ICollection<City> Cities { get; set; } = new List<City>();
     }
 }

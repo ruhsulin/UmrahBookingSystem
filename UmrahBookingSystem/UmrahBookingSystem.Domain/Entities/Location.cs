@@ -1,14 +1,15 @@
-﻿namespace UmrahBookingSystem.Domain.Entities
+﻿using UmrahBookingSystem.Domain.Common;
+
+namespace UmrahBookingSystem.Domain.Entities
 {
-    public class Location
+    public class Location : BaseEntity
     {
         public int Id { get; set; }
-        public required string StreetName { get; set; }
-        public required string DoorNumber { get; set; }
-        public required string PostalCode { get; set; }
+        public string StreetName { get; set; } = null!;
+        public string? DoorNumber { get; set; }
+        public string? PostalCode { get; set; }
         public int CityId { get; set; }
         public City City { get; set; } = null!;
-        public ICollection<User> Users { get; set; } = new List<User>();
         public ICollection<Activity> Activities{ get; set; }  = new List<Activity>();
         public ICollection<Hotel> Hotels { get; set; }  = new List<Hotel>();
     }
