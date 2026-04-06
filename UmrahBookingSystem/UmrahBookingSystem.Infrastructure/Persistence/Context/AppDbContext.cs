@@ -36,29 +36,8 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Booking>()
-                .Property(b => b.Status)
-                .HasConversion<string>();
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-            modelBuilder.Entity<Payment>()
-                .Property(p => p.PaymentMethod)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Payment>()
-                .Property(p => p.Status)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Payment>()
-                .Property(p => p.Type)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Passenger>()
-                .Property(p => p.VerificationStatus)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Notification>()
-                .Property(n => n.Type)
-                .HasConversion<string>();
         }
     }
 }
