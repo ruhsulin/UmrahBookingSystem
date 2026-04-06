@@ -1,4 +1,6 @@
-﻿namespace UmrahBookingSystem.Domain.Entities
+﻿using UmrahBookingSystem.Domain.Enums;
+
+namespace UmrahBookingSystem.Domain.Entities
 {
     public class Booking
     {
@@ -6,7 +8,7 @@
         public required DateTime BookingDate { get; set; }
         public required int NumPassengers { get; set; }
         public required decimal TotalPrice {  get; set; }
-        public required string Status { get; set; }
+        public required BookingStatus Status { get; set; }
         public required string UserId { get; set; }
         public required int PackageId { get; set; }
 
