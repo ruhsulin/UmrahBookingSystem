@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UmrahBookingSystem.Application\UmrahBookingSystem.Application.csproj" />
+    <ProjectReference Include="..\UmrahBookingSystem.Infrastructure\UmrahBookingSystem.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
