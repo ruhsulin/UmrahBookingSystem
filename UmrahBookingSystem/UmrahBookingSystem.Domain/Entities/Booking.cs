@@ -1,10 +1,18 @@
-﻿using UmrahBookingSystem.Domain.Enums;
+﻿using UmrahBookingSystem.Domain.Common;
+
+using UmrahBookingSystem.Domain.Enums;
 
 namespace UmrahBookingSystem.Domain.Entities
 {
-    public class Booking
+    public class Booking : BaseEntity
     {
         public int Id { get; set; }
+        public DateTime BookingDate { get; set; }
+        public int NumPassengers { get; set; }
+        public decimal TotalPrice {  get; set; }
+        public string Status { get; set; } = null!;
+        public string UserId { get; set; } = null!;
+        public int PackageId { get; set; } 
         public required DateTime BookingDate { get; set; }
         public required int NumPassengers { get; set; }
         public required decimal TotalPrice {  get; set; }

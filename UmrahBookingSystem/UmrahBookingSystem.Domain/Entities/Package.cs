@@ -1,27 +1,29 @@
-﻿namespace UmrahBookingSystem.Domain.Entities
+﻿using UmrahBookingSystem.Domain.Common;
+
+namespace UmrahBookingSystem.Domain.Entities
 {
-    public class Package
+    public class Package : BaseEntity
     {
         public int Id { get; set; }
-        public required string PackageName { get; set; }
-        public required DateTime DepartureDate { get; set; }
-        public required DateTime ReturnDate { get; set; }
-        public required DateTime DepartureTime { get; set; }
-        public required int MaxPassenger { get; set; }
-        public required int BaggageAllowance { get; set; }
-        public required string Description { get; set; }
-        public required string CoverImageUrl { get; set; }
-        public required decimal BasePrice { get; set; }
-        public required string DepartureAirport { get; set; }
-        public required string ArrivalAirport { get; set; }
+        public string PackageName { get; set; } = null!;
+        public DateTime DepartureDate { get; set; }
+        public DateTime ReturnDate { get; set; }
+        public DateTime DepartureTime { get; set; }
+        public int MaxPassenger { get; set; }
+        public int BaggageAllowance { get; set; }
+        public string Description { get; set; } = null!;
+        public string CoverImageUrl { get; set; } = null!;
+        public decimal BasePrice { get; set; } 
+        public string DepartureAirport { get; set; } = null!;
+        public string ArrivalAirport { get; set; } = null!;
         public string? TransitAirport { get; set; }
-        public required string AirlineName { get; set; }
+        public string AirlineName { get; set; } = null!;
 
-        public required string DepartureFlightNumber { get; set; }
-        public required string ReturnFlightNumber { get; set; }
-        public required DateTime ReturnTime { get; set; }
-        public required int AvailableSpots { get; set; }
-        public required int PaymentDeadlineDays { get; set; }
+        public string DepartureFlightNumber { get; set; } = null!;
+        public string ReturnFlightNumber { get; set; } = null!;
+        public DateTime ReturnTime { get; set; }
+        public int AvailableSpots { get; set; }
+        public int PaymentDeadlineDays { get; set; }
 
         public ICollection<PackageService> PackageServices { get; set; } = new List<PackageService>();
         public ICollection<PackageActivity> PackageActivities { get; set; } = new List<PackageActivity>();

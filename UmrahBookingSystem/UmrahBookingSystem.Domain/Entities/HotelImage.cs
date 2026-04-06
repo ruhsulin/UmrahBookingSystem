@@ -1,10 +1,12 @@
-﻿namespace UmrahBookingSystem.Domain.Entities
+﻿using UmrahBookingSystem.Domain.Common;
+
+namespace UmrahBookingSystem.Domain.Entities
 {
-    public class HotelImage
+    public class HotelImage : BaseEntity
     {
         public int Id { get; set; }
-        public required string ImageUrl { get; set; }
-        public required int HotelId { get; set; }
+        public string ImageUrl { get; set; } = null!;
+        public int HotelId { get; set; }
         public Hotel Hotel { get; set; } = null!;  
     }
 }

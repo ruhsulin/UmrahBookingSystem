@@ -1,10 +1,13 @@
 ﻿
+using UmrahBookingSystem.Domain.Common;
+
 namespace UmrahBookingSystem.Domain.Entities
 {
-    public class UserRole
+    public class UserRole : BaseEntity
+
     {
         public int Id { get; set; }
-        public required string RoleName { get; set; }
+        public string RoleName { get; set; } = null!;
 
         public ICollection<User> Users { get; set; } = new List<User>();
     }
