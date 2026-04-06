@@ -1,4 +1,6 @@
-﻿namespace UmrahBookingSystem.Domain.Entities
+﻿using UmrahBookingSystem.Domain.Enums;
+
+namespace UmrahBookingSystem.Domain.Entities
 {
     public class Passenger
     {
@@ -10,7 +12,7 @@
         public required DateTime PassportExpiryDate { get; set; }
         public required string PassportImageUrl { get; set; }
         public required string PersonalPhotoUrl { get; set; }
-        public required string VerificationStatus { get; set; }
+        public required VerificationStatus VerificationStatus { get; set; }
         public string? VerificationNote { get; set; }
         public int? GuardianId { get; set; }
         public required int BookingId { get; set; }
