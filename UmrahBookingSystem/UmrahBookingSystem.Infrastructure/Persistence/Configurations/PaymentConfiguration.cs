@@ -38,6 +38,16 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.Property(p => p.StripePaymentIntentId)
                 .IsRequired(false);
+
+                builder.HasOne(p => p.Booking)
+                .WithMany(b => b.Payments)
+                .HasForeignKey(p => p.BookingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(p => p.RecordedByAdmin)
+                .WithMany()
+                .HasForeignKey(p => p.RecordedByAdminId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

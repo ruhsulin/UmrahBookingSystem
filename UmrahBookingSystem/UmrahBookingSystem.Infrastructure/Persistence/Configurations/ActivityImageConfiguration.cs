@@ -17,6 +17,14 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
             builder.Property(ai => ai.ImageUrl)
                 .IsRequired()
                 .HasMaxLength(500);
+
+            builder.Property(ai => ai.ActivityId)
+            .IsRequired();
+
+            builder.HasOne(ai => ai.Activity)
+                .WithMany(a => a.ActivityImages)
+                .HasForeignKey(ai => ai.ActivityId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
