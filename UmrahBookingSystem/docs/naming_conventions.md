@@ -80,4 +80,3 @@ This document defines the naming conventions applied consistently across all lay
 
 - Table Names: Plural, PascalCase
 - Examples: PackageHotels, PackageServices, BookingRooms
-
