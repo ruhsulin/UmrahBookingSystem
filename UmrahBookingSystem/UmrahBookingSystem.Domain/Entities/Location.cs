@@ -10,6 +10,8 @@ namespace UmrahBookingSystem.Domain.Entities
         public string? PostalCode { get; set; }
         public int CityId { get; set; }
         public City City { get; set; } = null!;
+
+        //navigation properties
         public ICollection<Activity> Activities{ get; set; }  = new List<Activity>();
         public ICollection<Hotel> Hotels { get; set; }  = new List<Hotel>();
     }

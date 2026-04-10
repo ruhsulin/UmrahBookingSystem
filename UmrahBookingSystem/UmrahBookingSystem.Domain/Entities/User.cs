@@ -24,4 +24,3 @@ namespace UmrahBookingSystem.Domain.Entities
         public ICollection<WaitingList> WaitingLists { get; set; } = new List<WaitingList>();
     }
 }
-

@@ -1,4 +1,5 @@
 ﻿using UmrahBookingSystem.Domain.Common;
+using UmrahBookingSystem.Domain.Enums;
 
 namespace UmrahBookingSystem.Domain.Entities
 {
@@ -8,7 +9,7 @@ namespace UmrahBookingSystem.Domain.Entities
         public string Title { get; set; } = null!;
         public string Message { get; set; } = null!;
         public bool IsRead { get; set; }
-        public string Type { get; set; } = null!;
+        public NotificationType Type { get; set; }
         public DateTime CreatedAt { get; set; } 
         public string UserId { get; set; } = null!;
 
