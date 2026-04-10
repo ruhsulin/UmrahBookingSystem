@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/docs/">
+    <File Path="docs/naming_conventions.md" />
     <File Path="schema-validation.md" />
   </Folder>
   <Project Path="UmrahBookingSystem.Application/UmrahBookingSystem.Application.csproj" />
