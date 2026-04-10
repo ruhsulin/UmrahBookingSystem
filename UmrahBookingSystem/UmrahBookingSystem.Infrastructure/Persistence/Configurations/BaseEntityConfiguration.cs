@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UmrahBookingSystem.Domain.Common;
+using UmrahBookingSystem.Domain.Entities;
 
 namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 {
@@ -19,6 +20,16 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.Property(e => e.UpdatedBy)
                 .IsRequired(false);
+
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(e => e.CreatedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne<User>()
+               .WithMany()
+               .HasForeignKey(e => e.UpdatedBy)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

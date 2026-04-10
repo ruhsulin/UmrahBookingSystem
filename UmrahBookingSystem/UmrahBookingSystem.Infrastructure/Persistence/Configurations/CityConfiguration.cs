@@ -17,6 +17,11 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
             builder.Property(c => c.CityName)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            builder.HasOne(ci => ci.Country)
+                .WithMany(co => co.Cities)
+                .HasForeignKey(ci => ci.CountryId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
