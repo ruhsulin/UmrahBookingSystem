@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/docs/" />
+  <Folder Name="/docs/">
+    <File Path="schema-validation.md" />
+  </Folder>
   <Project Path="UmrahBookingSystem.Application/UmrahBookingSystem.Application.csproj" />
   <Project Path="UmrahBookingSystem.Domain/UmrahBookingSystem.Domain.csproj" />
   <Project Path="UmrahBookingSystem.Infrastructure/UmrahBookingSystem.Infrastructure.csproj" />
