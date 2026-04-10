@@ -1,4 +1,5 @@
 ﻿using UmrahBookingSystem.Domain.Common;
+using UmrahBookingSystem.Domain.Enums;
 
 namespace UmrahBookingSystem.Domain.Entities
 {
@@ -7,9 +8,9 @@ namespace UmrahBookingSystem.Domain.Entities
         public int Id { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
-        public string PaymentMethod { get; set; } = null!;
-        public string Status { get; set; } = null!;
-        public string Type { get; set; } = null!;
+        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentStatus Status { get; set; }
+        public PaymentType Type { get; set; }
         public string? RecordedByAdminId { get; set; }
         public string? StripePaymentIntentId { get; set; }
 

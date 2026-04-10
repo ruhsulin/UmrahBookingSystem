@@ -17,6 +17,11 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
             builder.Property(hi => hi.ImageUrl)
                 .IsRequired()
                 .HasMaxLength(500);
+
+            builder.HasOne(hi => hi.Hotel)
+                .WithMany(h => h.HotelImages)
+                .HasForeignKey(hi => hi.HotelId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

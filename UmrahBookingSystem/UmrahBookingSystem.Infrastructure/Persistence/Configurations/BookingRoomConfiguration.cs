@@ -22,6 +22,16 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
                 builder.Property(br => br.Quantity)
                     .IsRequired();
+
+                builder.HasOne(br => br.Booking)
+                    .WithMany(b => b.BookingRooms)
+                    .HasForeignKey(br => br.BookingId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                builder.HasOne(br => br.Room)
+                    .WithMany(r => r.BookingRooms)
+                    .HasForeignKey(br => br.RoomId)
+                    .OnDelete(DeleteBehavior.Restrict);
             }
         }
-    }
+}
