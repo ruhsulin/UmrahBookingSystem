@@ -5,6 +5,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
+	
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
@@ -27,7 +31,6 @@
 	  <Folder Include="Settings\" />
 	  <Folder Include="SignalR\" />
 	  <Folder Include="Services\" />
-	  <Folder Include="Repositories\" />
 	</ItemGroup>
 
 </Project>
