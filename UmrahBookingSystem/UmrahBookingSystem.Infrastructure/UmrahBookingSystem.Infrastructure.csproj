@@ -31,7 +31,6 @@
 	  <Folder Include="Settings\" />
 	  <Folder Include="SignalR\" />
 	  <Folder Include="Services\" />
-	  <Folder Include="Repositories\" />
 	</ItemGroup>
 
 </Project>
