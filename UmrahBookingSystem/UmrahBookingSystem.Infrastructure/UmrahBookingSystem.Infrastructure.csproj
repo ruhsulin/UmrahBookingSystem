@@ -26,7 +26,6 @@
 
 	<ItemGroup>
 	  <Folder Include="BackgroundJobs\" />
-	  <Folder Include="DependencyInjection\" />
 	  <Folder Include="Persistence\Seed\" />
 	  <Folder Include="Settings\" />
 	  <Folder Include="SignalR\" />
