@@ -1,15 +1,14 @@
-using Microsoft.EntityFrameworkCore;
-using UmrahBookingSystem.Infrastructure.Persistence.Context;
-
+using UmrahBookingSystem.Infrastructure.DependencyInjection;
+using UmrahBookingSystem.Application.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddHttpContextAccessor();
 
-// Connectionstring
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+
 
 
 var app = builder.Build();
