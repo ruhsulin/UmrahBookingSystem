@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using UmrahBookingSystem.Domain.Common;
 using UmrahBookingSystem.Domain.Entities;
@@ -75,6 +76,18 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Context
                     entry.Entity.CreatedAt = DateTime.UtcNow;
                 }
             }
+
+            //application of soft delete
+            foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+            {
+                if (entry.State == EntityState.Deleted)
+                {
+                    entry.State = EntityState.Modified;
+                    entry.Entity.IsDeleted = true;
+                    entry.Entity.DeletedAt = DateTime.UtcNow;
+                    entry.Entity.DeletedBy = userId;
+                }
+            }
         }
 
         public DbSet<Activity> Activities { get; set; }
@@ -104,6 +117,23 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+            // Apply global query filters for soft delete
+            foreach(var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    var parameter = Expression.Parameter(entityType.ClrType, "e");
+                    var filterExpression = Expression.Lambda(
+                        Expression.Equal(
+                            Expression.Property(parameter, nameof(BaseEntity.IsDeleted)),
+                            Expression.Constant(false)
+                        ),
+                        parameter
+                    );
+                    entityType.SetQueryFilter(filterExpression);
+                }
+            }
 
         }
     }

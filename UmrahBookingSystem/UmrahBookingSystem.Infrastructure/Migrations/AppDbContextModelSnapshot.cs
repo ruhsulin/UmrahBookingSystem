@@ -32,19 +32,48 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.Property<string>("ActivityName")
                         .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Activities");
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Activities", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.ActivityImage", b =>
@@ -58,15 +87,42 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.Property<int>("ActivityId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
 
-                    b.ToTable("ActivityImages");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("ActivityImages", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Booking", b =>
@@ -80,33 +136,109 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("NumberOfPeople")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("NumPassengers")
                         .HasColumnType("int");
 
                     b.Property<int>("PackageId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedBy");
+
                     b.HasIndex("PackageId");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("UpdatedBy");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.BookingRoom", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("BookingRooms", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.City", b =>
@@ -119,16 +251,43 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.Property<string>("CityName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Country", b =>
@@ -141,11 +300,38 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.Property<string>("CountryName")
                         .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Hotel", b =>
@@ -156,9 +342,26 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HotelName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
@@ -166,11 +369,21 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.Property<int>("Stars")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Hotels");
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Hotels", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.HotelImage", b =>
@@ -181,18 +394,45 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedBy");
+
                     b.HasIndex("HotelId");
 
-                    b.ToTable("HotelImages");
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("HotelImages", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Location", b =>
@@ -206,23 +446,89 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DoorNumber")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
                         .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DoorNumber")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<string>("StreetName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Locations");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Locations", (string)null);
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(2500)
+                        .HasColumnType("nvarchar(2500)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Package", b =>
@@ -233,28 +539,107 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AirlineName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ArrivalAirport")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("AvailableSpots")
+                        .HasColumnType("int");
+
                     b.Property<int>("BaggageAllowance")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("BasePrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CoverImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepartureAirport")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("DepartureDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeOnly>("DepartureTime")
-                        .HasColumnType("time");
+                    b.Property<string>("DepartureFlightNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("MaxPassanger")
+                    b.Property<DateTime>("DepartureTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2500)
+                        .HasColumnType("nvarchar(2500)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxPassenger")
                         .HasColumnType("int");
 
                     b.Property<string>("PackageName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int>("PaymentDeadlineDays")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ReturnFlightNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<DateTime>("ReturnTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransitAirport")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Packages");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Packages", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.PackageActivity", b =>
@@ -268,16 +653,42 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.Property<int>("ActivityId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PackageId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
 
+                    b.HasIndex("CreatedBy");
+
                     b.HasIndex("PackageId");
 
-                    b.ToTable("PackageActivites");
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("PackageActivities", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.PackageHotel", b =>
@@ -288,19 +699,45 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PackageId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("HotelId");
 
                     b.HasIndex("PackageId");
 
-                    b.ToTable("PackageHotels");
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("PackageHotels", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.PackageService", b =>
@@ -311,22 +748,137 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("PackageId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("PackageId");
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("PackageServices");
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("PackageServices", (string)null);
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Passenger", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("GuardianId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("PassportExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PassportImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("PassportNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PersonalPhotoUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VerificationNote")
+                        .HasMaxLength(2500)
+                        .HasColumnType("nvarchar(2500)");
+
+                    b.Property<string>("VerificationStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("GuardianId");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Passengers", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Payment", b =>
@@ -338,25 +890,66 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentMethod")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RecordedByAdminId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripePaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookingId");
 
-                    b.ToTable("Payments");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("RecordedByAdminId");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Room", b =>
@@ -367,15 +960,42 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("RoomPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("RoomType")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Rooms");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Service", b =>
@@ -386,13 +1006,40 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ServiceName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.User", b =>
@@ -400,35 +1047,58 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("UserRoleId")
+                    b.Property<string>("ProfilePhotoUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("UserRoleId");
+                    b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.UserRole", b =>
@@ -439,22 +1109,113 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRoles");
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("UserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.WaitingList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PackageId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegisteredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("PackageId");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("WaitingLists", (string)null);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Activity", b =>
                 {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Location", "Location")
                         .WithMany("Activities")
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Location");
                 });
@@ -467,32 +1228,78 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Activity");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Booking", b =>
                 {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
                         .WithMany("Bookings")
                         .HasForeignKey("PackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("UmrahBookingSystem.Domain.Entities.Room", "Room")
-                        .WithMany("Bookings")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", "User")
                         .WithMany("Bookings")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Package");
 
-                    b.Navigation("Room");
-
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.BookingRoom", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.Booking", "Booking")
+                        .WithMany("BookingRooms")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.Room", "Room")
+                        .WithMany("BookingRooms")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.City", b =>
@@ -500,30 +1307,77 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Country");
                 });
 
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Country", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Hotel", b =>
                 {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Location", "Location")
                         .WithMany("Hotels")
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Location");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.HotelImage", b =>
                 {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Hotel", "Hotel")
                         .WithMany("HotelImages")
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Hotel");
                 });
@@ -533,10 +1387,46 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasOne("UmrahBookingSystem.Domain.Entities.City", "City")
                         .WithMany("Locations")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("City");
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Notification", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Package", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.PackageActivity", b =>
@@ -544,7 +1434,13 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Activity", "Activity")
                         .WithMany("PackageActivities")
                         .HasForeignKey("ActivityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
@@ -552,6 +1448,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Activity");
 
@@ -560,10 +1461,16 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.PackageHotel", b =>
                 {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Hotel", "Hotel")
                         .WithMany("PackageHotels")
                         .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
@@ -572,6 +1479,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Hotel");
 
                     b.Navigation("Package");
@@ -579,6 +1491,12 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.PackageService", b =>
                 {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
                         .WithMany("PackageServices")
                         .HasForeignKey("PackageId")
@@ -588,12 +1506,46 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Service", "Service")
                         .WithMany("PackageServices")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Package");
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Passenger", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.Booking", "Booking")
+                        .WithMany("Passengers")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.Passenger", "Guardian")
+                        .WithMany("Dependents")
+                        .HasForeignKey("GuardianId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Guardian");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Payment", b =>
@@ -601,29 +1553,119 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Booking", "Booking")
                         .WithMany("Payments")
                         .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", "RecordedByAdmin")
+                        .WithMany()
+                        .HasForeignKey("RecordedByAdminId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("Booking");
+
+                    b.Navigation("RecordedByAdmin");
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Room", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Service", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.User", b =>
                 {
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Location", "Location")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("UmrahBookingSystem.Domain.Entities.UserRole", "UserRole")
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.UserRole", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("UserRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Location");
 
-                    b.Navigation("UserRole");
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.UserRole", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.WaitingList", b =>
+                {
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
+                        .WithMany("WaitingLists")
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", "User")
+                        .WithMany("WaitingLists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Package");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Activity", b =>
@@ -635,6 +1677,10 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Booking", b =>
                 {
+                    b.Navigation("BookingRooms");
+
+                    b.Navigation("Passengers");
+
                     b.Navigation("Payments");
                 });
 
@@ -660,8 +1706,6 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.Navigation("Activities");
 
                     b.Navigation("Hotels");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Package", b =>
@@ -673,11 +1717,18 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.Navigation("PackageHotels");
 
                     b.Navigation("PackageServices");
+
+                    b.Navigation("WaitingLists");
+                });
+
+            modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Passenger", b =>
+                {
+                    b.Navigation("Dependents");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Room", b =>
                 {
-                    b.Navigation("Bookings");
+                    b.Navigation("BookingRooms");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.Service", b =>
@@ -688,6 +1739,10 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.User", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("WaitingLists");
                 });
 
             modelBuilder.Entity("UmrahBookingSystem.Domain.Entities.UserRole", b =>
