@@ -10,7 +10,8 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
             builder.Property(e => e.CreatedAt)
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()") ;
 
             builder.Property(e => e.CreatedBy)
                 .IsRequired();
@@ -30,6 +31,9 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                .WithMany()
                .HasForeignKey(e => e.UpdatedBy)
                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(e => e.IsDeleted)
+                .HasDefaultValue(false);
         }
     }
 }

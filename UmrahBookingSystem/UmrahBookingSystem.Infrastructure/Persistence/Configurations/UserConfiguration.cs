@@ -37,7 +37,8 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .HasMaxLength(500);
 
             builder.Property(u => u.CreatedAt)
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()");
 
             builder.Property(u => u.UpdatedAt)
                 .IsRequired(false);
@@ -54,6 +55,9 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+           builder.Property( u => u.IsDeleted)
+                .HasDefaultValue(false);
         }
     }
 }
