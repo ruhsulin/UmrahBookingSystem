@@ -15,6 +15,7 @@ namespace UmrahBookingSystem.Domain.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; } 
 
         // Navigation properties
         public Location Location { get; set; } = null!;

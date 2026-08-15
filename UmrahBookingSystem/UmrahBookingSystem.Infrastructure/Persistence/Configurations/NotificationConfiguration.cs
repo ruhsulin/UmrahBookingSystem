@@ -21,14 +21,14 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .HasMaxLength(2500);
 
             builder.Property(n => n.IsRead)
-                .IsRequired();
+                .HasDefaultValue(false);
 
             builder.Property(n => n.Type)
                 .HasConversion<string>()
                 .IsRequired();
 
             builder.Property(n => n.CreatedAt)
-                .IsRequired();
+               .HasDefaultValueSql("GETUTCDATE()");
 
             builder.Property(n => n.UserId)
                 .IsRequired();

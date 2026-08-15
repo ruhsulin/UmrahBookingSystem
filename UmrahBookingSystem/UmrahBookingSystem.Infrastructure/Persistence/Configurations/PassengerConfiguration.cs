@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UmrahBookingSystem.Domain.Entities;
+using UmrahBookingSystem.Domain.Enums;
 
 namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 {
@@ -42,7 +43,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.Property(p => p.VerificationStatus)
                 .HasConversion<string>()
-                .IsRequired();
+                .HasDefaultValue(VerificationStatus.Pending);
 
             builder.Property(p => p.VerificationNote)
                 .IsRequired(false)
