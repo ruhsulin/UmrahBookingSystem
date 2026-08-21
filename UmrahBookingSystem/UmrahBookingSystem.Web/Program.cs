@@ -11,23 +11,35 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 1. Exception handling (wraps everything)
+app.UseGlobalExceptionHandling();
+
+//  2. HTTPS (security first) - Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
 
-app.UseGlobalExceptionHandling();
 app.UseHttpsRedirection();
+
+// 3. Static files (serve CSS/JS/images without routing)
+app.MapStaticAssets();
+
+// 4. Routing (figure out which controller)
 app.UseRouting();
 
+// 5. Authentication (who are you?)
+app.UseAuthentication();
+
+// 6. Authorization (do you have permission?)
 app.UseAuthorization();
 
-app.MapStaticAssets();
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
