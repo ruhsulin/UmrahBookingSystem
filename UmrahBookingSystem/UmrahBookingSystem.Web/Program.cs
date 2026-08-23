@@ -1,5 +1,7 @@
-using UmrahBookingSystem.Infrastructure.DependencyInjection;
 using UmrahBookingSystem.Application.DependencyInjection;
+using UmrahBookingSystem.Infrastructure.DependencyInjection;
+using UmrahBookingSystem.Infrastructure.Persistence.Context;
+using UmrahBookingSystem.Infrastructure.Persistence.Seed;
 using UmrahBookingSystem.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,5 +43,11 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//    InitialDataSeeder.SeedSystemUser(context);
+//}
 
 app.Run();

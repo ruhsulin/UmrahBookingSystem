@@ -1149,7 +1149,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("LocationId")
+                    b.Property<int?>("LocationId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
@@ -1161,7 +1161,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -1699,14 +1699,12 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.UserRole", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Location");
 
