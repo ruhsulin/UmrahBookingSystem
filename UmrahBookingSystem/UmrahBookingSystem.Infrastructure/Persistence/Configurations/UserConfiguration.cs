@@ -23,7 +23,10 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
             builder.Property(u => u.Email)
                 .IsRequired()
                 .HasMaxLength(250);
-            builder.HasIndex(u => u.Email).IsUnique();
+
+            builder.HasIndex(u => u.Email)
+                .IsUnique()
+                .HasDatabaseName("IX_Users_Email");
 
             builder.Property(u => u.PhoneNumber)
                 .IsRequired()
