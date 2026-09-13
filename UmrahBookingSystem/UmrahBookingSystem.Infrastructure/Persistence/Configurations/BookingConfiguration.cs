@@ -37,6 +37,12 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .WithMany(p => p.Bookings)
                 .HasForeignKey(b => b.PackageId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(b => b.UserId)
+         .HasDatabaseName("IX_Bookings_UserId");
+
+            builder.HasIndex(b => b.PackageId)
+               .HasDatabaseName("IX_Bookings_PackageId");
         }
     }
 }
