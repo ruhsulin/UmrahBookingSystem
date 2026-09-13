@@ -37,6 +37,9 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .WithMany(u => u.Notifications)
                 .HasForeignKey(n => n.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(n => n.UserId)
+                .HasDatabaseName("IX_Notifications_UserId");
         }
     }
 }

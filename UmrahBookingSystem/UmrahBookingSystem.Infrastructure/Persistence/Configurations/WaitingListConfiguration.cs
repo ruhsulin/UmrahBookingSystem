@@ -26,6 +26,9 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .WithMany(p => p.WaitingLists)
                 .HasForeignKey(wl => wl.PackageId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasIndex(wl =>wl.PackageId)
+                .HasDatabaseName("IX_WaitingLists_PackageId");
         }
     }
 }
