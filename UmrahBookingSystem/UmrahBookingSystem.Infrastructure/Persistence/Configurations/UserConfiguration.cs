@@ -52,12 +52,14 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
             builder.HasOne(u => u.Location)
                 .WithMany()
                 .HasForeignKey(u => u.LocationId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
 
            builder.HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
 
            builder.Property( u => u.IsDeleted)
                 .HasDefaultValue(false);
