@@ -48,7 +48,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -72,6 +72,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("LocationId");
 
@@ -104,7 +106,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -127,6 +129,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasIndex("ActivityId");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("UpdatedBy");
 
@@ -157,7 +161,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -172,7 +176,9 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Pending");
 
                     b.Property<decimal>("TotalPrice")
                         .HasPrecision(18, 2)
@@ -191,6 +197,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("PackageId")
                         .HasDatabaseName("IX_Bookings_PackageId");
@@ -227,7 +235,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -251,6 +259,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasIndex("BookingId");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("RoomId");
 
@@ -288,7 +298,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -306,6 +316,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasIndex("CountryId");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("UpdatedBy");
 
@@ -338,7 +350,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -354,6 +366,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("UpdatedBy");
 
@@ -381,7 +395,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("HotelName")
                         .IsRequired()
@@ -408,6 +422,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("LocationId");
 
@@ -437,7 +453,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
@@ -461,6 +477,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("HotelId");
 
@@ -493,7 +511,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DoorNumber")
                         .HasMaxLength(10)
@@ -524,6 +542,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasIndex("CityId");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("UpdatedBy");
 
@@ -620,7 +640,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DepartureAirport")
                         .IsRequired()
@@ -684,6 +704,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
+                    b.HasIndex("DeletedBy");
+
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("Packages", (string)null);
@@ -713,7 +735,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -734,6 +756,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasIndex("ActivityId");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("PackageId");
 
@@ -763,7 +787,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
@@ -785,6 +809,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("HotelId");
 
@@ -816,7 +842,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -842,6 +868,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("PackageId");
 
@@ -879,7 +907,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -937,6 +965,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
+                    b.HasIndex("DeletedBy");
+
                     b.HasIndex("GuardianId");
 
                     b.HasIndex("UpdatedBy");
@@ -977,7 +1007,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -996,7 +1026,9 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Pending");
 
                     b.Property<string>("StripePaymentIntentId")
                         .HasColumnType("nvarchar(max)");
@@ -1017,6 +1049,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasDatabaseName("IX_Payments_BookingId");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("RecordedByAdminId");
 
@@ -1046,7 +1080,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -1069,6 +1103,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("UpdatedBy");
 
@@ -1096,7 +1132,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -1117,6 +1153,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("UpdatedBy");
 
@@ -1211,7 +1249,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -1232,6 +1270,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("UpdatedBy");
 
@@ -1259,7 +1299,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -1270,7 +1310,9 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegisteredAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -1285,6 +1327,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("DeletedBy");
 
                     b.HasIndex("PackageId")
                         .HasDatabaseName("IX_WaitingLists_PackageId");
@@ -1303,6 +1347,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Location", "Location")
                         .WithMany("Activities")
@@ -1334,6 +1383,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
                         .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -1347,6 +1401,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
                         .WithMany("Bookings")
@@ -1384,6 +1443,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Room", "Room")
                         .WithMany("BookingRooms")
                         .HasForeignKey("RoomId")
@@ -1416,6 +1480,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
                         .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -1432,6 +1501,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
                         .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -1443,6 +1517,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Location", "Location")
                         .WithMany("Hotels")
@@ -1465,6 +1544,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Hotel", "Hotel")
                         .WithMany("HotelImages")
@@ -1496,6 +1580,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
                         .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
@@ -1523,6 +1612,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
                         .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -1540,6 +1634,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
                         .WithMany("PackageActivities")
@@ -1564,6 +1663,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Hotel", "Hotel")
                         .WithMany("PackageHotels")
@@ -1594,6 +1698,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
                         .WithMany("PackageServices")
@@ -1631,6 +1740,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Passenger", "Guardian")
                         .WithMany("Dependents")
                         .HasForeignKey("GuardianId")
@@ -1660,6 +1774,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", "RecordedByAdmin")
                         .WithMany()
                         .HasForeignKey("RecordedByAdminId")
@@ -1685,6 +1804,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
                         .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -1696,6 +1820,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
                         .WithMany()
@@ -1730,6 +1859,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
                         .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
@@ -1741,6 +1875,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("UmrahBookingSystem.Domain.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("DeletedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Package", "Package")
                         .WithMany("WaitingLists")
