@@ -192,11 +192,13 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("PackageId");
+                    b.HasIndex("PackageId")
+                        .HasDatabaseName("IX_Bookings_PackageId");
 
                     b.HasIndex("UpdatedBy");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_Bookings_UserId");
 
                     b.ToTable("Bookings", (string)null);
                 });
@@ -566,7 +568,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_Notifications_UserId");
 
                     b.ToTable("Notifications", (string)null);
                 });
@@ -932,13 +935,16 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
-
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("GuardianId");
 
                     b.HasIndex("UpdatedBy");
+
+                    b.HasIndex("BookingId", "PassportNumber")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Passengers_BookingId_PassportNumber")
+                        .HasFilter("[IsDeleted] = 0");
 
                     b.ToTable("Passengers", (string)null);
                 });
@@ -1007,7 +1013,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
+                    b.HasIndex("BookingId")
+                        .HasDatabaseName("IX_Payments_BookingId");
 
                     b.HasIndex("CreatedBy");
 
@@ -1149,7 +1156,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("LocationId")
+                    b.Property<int?>("LocationId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
@@ -1161,7 +1168,7 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -1173,7 +1180,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Email");
 
                     b.HasIndex("LocationId");
 
@@ -1278,7 +1286,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("PackageId");
+                    b.HasIndex("PackageId")
+                        .HasDatabaseName("IX_WaitingLists_PackageId");
 
                     b.HasIndex("UpdatedBy");
 
@@ -1699,14 +1708,12 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasOne("UmrahBookingSystem.Domain.Entities.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("UmrahBookingSystem.Domain.Entities.UserRole", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Location");
 

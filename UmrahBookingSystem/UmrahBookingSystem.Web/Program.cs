@@ -1,5 +1,7 @@
-using UmrahBookingSystem.Infrastructure.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using UmrahBookingSystem.Application.DependencyInjection;
+using UmrahBookingSystem.Infrastructure.DependencyInjection;
+using UmrahBookingSystem.Infrastructure.Persistence.Context;
 using UmrahBookingSystem.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,12 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.Migrate();
+}
 
 // 1. Exception handling (wraps everything)
 app.UseGlobalExceptionHandling();
