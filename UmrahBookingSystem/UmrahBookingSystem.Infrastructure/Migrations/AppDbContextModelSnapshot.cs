@@ -192,11 +192,13 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("PackageId");
+                    b.HasIndex("PackageId")
+                        .HasDatabaseName("IX_Bookings_PackageId");
 
                     b.HasIndex("UpdatedBy");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_Bookings_UserId");
 
                     b.ToTable("Bookings", (string)null);
                 });
@@ -566,7 +568,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_Notifications_UserId");
 
                     b.ToTable("Notifications", (string)null);
                 });
@@ -932,13 +935,16 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
-
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("GuardianId");
 
                     b.HasIndex("UpdatedBy");
+
+                    b.HasIndex("BookingId", "PassportNumber")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Passengers_BookingId_PassportNumber")
+                        .HasFilter("[IsDeleted] = 0");
 
                     b.ToTable("Passengers", (string)null);
                 });
@@ -1007,7 +1013,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
+                    b.HasIndex("BookingId")
+                        .HasDatabaseName("IX_Payments_BookingId");
 
                     b.HasIndex("CreatedBy");
 
@@ -1173,7 +1180,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Users_Email");
 
                     b.HasIndex("LocationId");
 
@@ -1278,7 +1286,8 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("PackageId");
+                    b.HasIndex("PackageId")
+                        .HasDatabaseName("IX_WaitingLists_PackageId");
 
                     b.HasIndex("UpdatedBy");
 
