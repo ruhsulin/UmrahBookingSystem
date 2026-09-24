@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UmrahBookingSystem.Domain.Entities;
+using UmrahBookingSystem.Domain.Enums;
 
 namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 {
@@ -22,11 +23,12 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.Property(b => b.TotalPrice)
                 .IsRequired()
-                .HasPrecision(18,2);
+                .HasPrecision(18, 2);
 
             builder.Property(b => b.Status)
                 .HasConversion<string>()
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValue(BookingStatus.Pending);
 
             builder.HasOne(b => b.User)
                 .WithMany(u => u.Bookings)
@@ -39,7 +41,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasIndex(b => b.UserId)
-         .HasDatabaseName("IX_Bookings_UserId");
+         .      HasDatabaseName("IX_Bookings_UserId");
 
             builder.HasIndex(b => b.PackageId)
                .HasDatabaseName("IX_Bookings_PackageId");

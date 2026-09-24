@@ -14,8 +14,9 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.HasKey(w => w.Id);
 
-            builder.Property(w => w.RegisteredAt).
-                IsRequired();
+            builder.Property(w => w.RegisteredAt)
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()");
 
             builder.HasOne(wl => wl.User)
                 .WithMany(u => u.WaitingLists)
