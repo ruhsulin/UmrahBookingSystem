@@ -41,10 +41,6 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(500);
 
-            builder.Property(p => p.BasePrice)
-                .IsRequired()
-                .HasPrecision(18, 2);
-
             builder.Property(p => p.DepartureAirport)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -73,9 +69,6 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(p => p.AvailableSpots)
-                .IsRequired();
-
-            builder.Property(p => p.PaymentDeadlineDays)
                 .IsRequired();
         }
     }

@@ -32,6 +32,11 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                .HasForeignKey(e => e.UpdatedBy)
                .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(e => e.DeletedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Property(e => e.IsDeleted)
                 .HasDefaultValue(false);
         }

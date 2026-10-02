@@ -106,7 +106,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Context
         public DbSet<PackageService> PackageServices { get; set; }
         public DbSet<Passenger> Passengers { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<Room> Rooms { get; set; }
+        public DbSet<PackageRoom> PackageRooms { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }

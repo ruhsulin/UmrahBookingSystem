@@ -14,10 +14,6 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.HasKey(ps => ps.Id);
 
-            builder.Property(ps => ps.Price)
-                .IsRequired()
-                .HasPrecision(18, 2);
-
             builder.Property(ps => ps.PackageId)
                 .IsRequired();
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UmrahBookingSystem.Domain.Entities;
+using UmrahBookingSystem.Domain.Enums;
 
 namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 {
@@ -16,7 +17,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.Property(p => p.Amount)
                 .IsRequired()
-                .HasPrecision(18,2);
+                .HasPrecision(18, 2);
 
             builder.Property(p => p.PaymentDate)
                 .IsRequired();
@@ -27,7 +28,8 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.Property(p => p.Status)
                 .HasConversion<string>()
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValue(PaymentStatus.Pending);
 
             builder.Property(p => p.Type)
                 .HasConversion<string>()
@@ -39,7 +41,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
             builder.Property(p => p.StripePaymentIntentId)
                 .IsRequired(false);
 
-                builder.HasOne(p => p.Booking)
+            builder.HasOne(p => p.Booking)
                 .WithMany(b => b.Payments)
                 .HasForeignKey(p => p.BookingId)
                 .OnDelete(DeleteBehavior.Restrict);

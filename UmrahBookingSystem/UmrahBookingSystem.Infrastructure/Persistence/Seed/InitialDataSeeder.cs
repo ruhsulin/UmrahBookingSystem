@@ -60,7 +60,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
             return adminRole;
         }
 
-        private static Country SeedCountries(AppDbContext context, User createdBy)
+        private static void SeedCountries(AppDbContext context, User createdBy)
         {
             var countryNames = new[] { "Kosovo", "Albania", "Macedonia", "Saudi Arabia" };
 
@@ -78,29 +78,39 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
             }
 
             context.SaveChanges();
-            return context.Countries.First(c => c.CountryName == "Kosovo"); 
         }
 
-        private static City SeedCities(AppDbContext context, User createdBy, Country country)
+        private static City SeedCities(AppDbContext context, User createdBy)
         {
-            var cityNames = new[] { "Pristina", "Prizren" };
-
-            foreach (var name in cityNames)
+            var citiesByCountry = new Dictionary<string, string[]>
             {
-                if (!context.Cities.Any(c => c.CityName == name && c.CountryId == country.Id))
+                ["Kosovo"] = new[] { "Pristina", "Prizren" },
+                ["Albania"] = new[] { "Tirana", "Durrës" },
+                ["Macedonia"] = new[] { "Skopje", "Tetovo" },
+                ["Saudi Arabia"] = new[] { "Mecca", "Medina" }
+            };
+
+            foreach (var (countryName, cityNames) in citiesByCountry)
+            {
+                var country = context.Countries.First(c => c.CountryName == countryName);
+
+                foreach (var name in cityNames)
                 {
-                    context.Cities.Add(new City
+                    if (!context.Cities.Any(c => c.CityName == name && c.CountryId == country.Id))
                     {
-                        CityName = name,       // ← verify this matches your actual City.cs
-                        CountryId = country.Id,
-                        CreatedBy = createdBy.Id,
-                        CreatedAt = DateTime.UtcNow
-                    });
+                        context.Cities.Add(new City
+                        {
+                            CityName = name,
+                            CountryId = country.Id,
+                            CreatedBy = createdBy.Id,
+                            CreatedAt = DateTime.UtcNow
+                        });
+                    }
                 }
             }
 
             context.SaveChanges();
-            return context.Cities.First(c => c.CityName == "Pristina" && c.CountryId == country.Id);
+            return context.Cities.First(c => c.CityName == "Pristina" && c.Country.CountryName == "Kosovo");
         }
 
         private static Location SeedLocations(AppDbContext context, User createdBy, City city)
@@ -142,8 +152,8 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
         {
             var bootstrapAdmin = SeedBootstrapAdmin(context);
             var adminRole = SeedRoles(context, bootstrapAdmin);
-            var country = SeedCountries(context, bootstrapAdmin);
-            var city = SeedCities(context, bootstrapAdmin, country);
+            SeedCountries(context, bootstrapAdmin);
+            var city = SeedCities(context, bootstrapAdmin);
             var location = SeedLocations(context, bootstrapAdmin, city);
             PromoteBootstrapAdmin(context, bootstrapAdmin, adminRole, location);  // ← last, after everything else exists
 

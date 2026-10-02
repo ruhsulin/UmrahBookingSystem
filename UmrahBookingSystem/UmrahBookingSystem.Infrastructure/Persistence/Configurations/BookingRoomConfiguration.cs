@@ -4,34 +4,38 @@ using UmrahBookingSystem.Domain.Entities;
 
 namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 {
-        public class BookingRoomConfiguration : BaseEntityConfiguration<BookingRoom>
+    public class BookingRoomConfiguration : BaseEntityConfiguration<BookingRoom>
+    {
+        public override void Configure(EntityTypeBuilder<BookingRoom> builder)
         {
-            public override void Configure(EntityTypeBuilder<BookingRoom> builder)
-            {
-                base.Configure(builder);
+            base.Configure(builder);
 
-                builder.ToTable("BookingRooms");
+            builder.ToTable("BookingRooms");
 
-                builder.HasKey(br => br.Id);
+            builder.HasKey(br => br.Id);
 
-                builder.Property(br => br.BookingId)
+            builder.Property(br => br.BookingId)
+                .IsRequired();
+
+            builder.Property(br => br.Quantity)
+                .IsRequired();
+
+            builder.HasOne(br => br.Booking)
+                .WithMany(b => b.BookingRooms)
+                .HasForeignKey(br => br.BookingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(br => br.PackageRoomId)
                     .IsRequired();
 
-                builder.Property(br => br.RoomId)
-                    .IsRequired();
+            builder.Property(br => br.PricePerPerson)
+                     .IsRequired()
+                     .HasPrecision(18, 2);
 
-                builder.Property(br => br.Quantity)
-                    .IsRequired();
-
-                builder.HasOne(br => br.Booking)
-                    .WithMany(b => b.BookingRooms)
-                    .HasForeignKey(br => br.BookingId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                builder.HasOne(br => br.Room)
-                    .WithMany(r => r.BookingRooms)
-                    .HasForeignKey(br => br.RoomId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            }
+            builder.HasOne(br => br.PackageRoom)
+                     .WithMany(pr => pr.BookingRooms)
+                     .HasForeignKey(br => br.PackageRoomId)
+                     .OnDelete(DeleteBehavior.Restrict);   // a booked price can't disappear
         }
+    }
 }

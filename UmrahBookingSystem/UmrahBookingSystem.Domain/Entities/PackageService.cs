@@ -5,7 +5,6 @@ namespace UmrahBookingSystem.Domain.Entities
     public class PackageService : BaseEntity
     {
         public int Id { get; set; }
-        public decimal Price { get; set; }
         public int PackageId { get; set; }
         public int ServiceId { get; set; }
 
