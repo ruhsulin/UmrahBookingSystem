@@ -13,6 +13,7 @@ namespace UmrahBookingSystem.Domain.Entities
         public string UserId { get; set; } = null!;
         public int PackageId { get; set; } 
         public  BookingStatus Status { get; set; }
+        public DateTime TermsAcceptedAt { get; set; }
 
         // Navigation properties
         public User User { get; set; } = null!;

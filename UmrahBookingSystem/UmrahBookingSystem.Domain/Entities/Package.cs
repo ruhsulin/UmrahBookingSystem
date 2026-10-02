@@ -13,7 +13,6 @@ namespace UmrahBookingSystem.Domain.Entities
         public int BaggageAllowance { get; set; }
         public string Description { get; set; } = null!;
         public string CoverImageUrl { get; set; } = null!;
-        public decimal BasePrice { get; set; } 
         public string DepartureAirport { get; set; } = null!;
         public string ArrivalAirport { get; set; } = null!;
         public string? TransitAirport { get; set; }
@@ -23,8 +22,8 @@ namespace UmrahBookingSystem.Domain.Entities
         public string ReturnFlightNumber { get; set; } = null!;
         public DateTime ReturnTime { get; set; }
         public int AvailableSpots { get; set; }
-        public int PaymentDeadlineDays { get; set; }
 
+        public ICollection<PackageRoom> PackageRooms { get; set; } = new List<PackageRoom>();
         public ICollection<PackageService> PackageServices { get; set; } = new List<PackageService>();
         public ICollection<PackageActivity> PackageActivities { get; set; } = new List<PackageActivity>();
         public ICollection<PackageHotel> PackageHotels { get; set; } = new List<PackageHotel>();

@@ -30,6 +30,9 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasDefaultValue(BookingStatus.Pending);
 
+            builder.Property(b => b.TermsAcceptedAt)
+                .IsRequired();
+
             builder.HasOne(b => b.User)
                 .WithMany(u => u.Bookings)
                 .HasForeignKey(b => b.UserId)
