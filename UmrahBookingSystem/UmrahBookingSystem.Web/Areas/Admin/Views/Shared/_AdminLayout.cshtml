@@ -99,7 +99,11 @@
                                 <i class="nav-icon bi bi-speedometer"></i><p>Dashboard</p>
                             </a>
                         </li>
-                        <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon bi bi-building"></i><p>Hotels</p></a></li>
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="Hotels" asp-action="Index" class="nav-link">
+                                <i class="nav-icon bi bi-building"></i><p>Hotels</p>
+                            </a>
+                        </li>
                         <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon bi bi-box-seam"></i><p>Packages</p></a></li>
                         <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon bi bi-people"></i><p>Clients</p></a></li>
                         <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon bi bi-credit-card"></i><p>Payments</p></a></li>

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<UmrahBookingSystem.Application.DTOs.Hotels.HotelDto>
+
+@{
+    ViewData["Title"] = "Hotels";
+}
+
+<div class="d-flex justify-content-end mb-3">
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> New hotel
+    </a>
+</div>
+
+@if (ViewData["Error"] is string error)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No hotels yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Stars</th>
+                <th>City</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hotel in Model)
+            {
+                <tr>
+                    <td>@hotel.HotelName</td>
+                    <td>@hotel.Stars</td>
+                    <td>@hotel.CityName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
