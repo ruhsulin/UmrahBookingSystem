@@ -48,6 +48,8 @@ namespace UmrahBookingSystem.Infrastructure.DependencyInjection
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IHotelRepository, HotelRepository>();
+            services.AddScoped<ICityRepository, CityRepository>();
 
             return services;
         }

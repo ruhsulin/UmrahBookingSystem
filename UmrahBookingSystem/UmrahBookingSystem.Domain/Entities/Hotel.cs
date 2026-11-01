@@ -2,7 +2,7 @@
 
 namespace UmrahBookingSystem.Domain.Entities
 {
-    public class Hotel : BaseEntity
+    public class Hotel : BaseEntity, IEntity<int>
     {
         public int Id { get; set; }
         public int Stars { get; set; }
