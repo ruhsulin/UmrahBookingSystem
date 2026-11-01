@@ -1,12 +1,11 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"] - Client</title>
-</head>
-<body>
-    <header>Client area</header>
-    <main>@RenderBody()</main>
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@RenderBody()
+
+@section Scripts {
     @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+}
