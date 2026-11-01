@@ -1,0 +1,47 @@
+﻿@model UmrahBookingSystem.Web.Areas.Admin.ViewModels.CreateHotelViewModel
+
+@{
+    ViewData["Title"] = "New hotel";
+}
+
+<form asp-action="Create" method="post" class="card card-body" style="max-width: 640px">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="HotelName" class="form-label">Hotel name</label>
+        <input asp-for="HotelName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Stars" class="form-label">Stars (1–5)</label>
+        <input asp-for="Stars" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CityId" class="form-label">City</label>
+        <select asp-for="CityId" asp-items="Model.Cities" class="form-select">
+            <option value="0">-- Select a city --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StreetName" class="form-label">Street</label>
+        <input asp-for="StreetName" class="form-control" />
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="DoorNumber" class="form-label">Door number</label>
+            <input asp-for="DoorNumber" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="PostalCode" class="form-label">Postal code</label>
+            <input asp-for="PostalCode" class="form-control" />
+        </div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
