@@ -26,6 +26,7 @@ namespace UmrahBookingSystem.Application.Services
         {
             var hotels = await _hotelRepository.GetAllWithCityAsync(cancellationToken);
             var hotelDtos = _mapper.Map<IEnumerable<HotelDto>>(hotels);
+
             return Result<IEnumerable<HotelDto>>.Success(hotelDtos);
         }
 
