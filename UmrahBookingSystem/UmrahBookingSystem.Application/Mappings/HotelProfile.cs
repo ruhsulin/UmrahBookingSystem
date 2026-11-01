@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AutoMapper;
+using UmrahBookingSystem.Application.DTOs.Hotels;
+using UmrahBookingSystem.Domain.Entities;
 
 namespace UmrahBookingSystem.Application.Mappings
 {
-    internal class HotelProfile
+    public class HotelProfile : Profile
     {
+        public HotelProfile()
+        {
+            CreateMap<Hotel, HotelDto>()
+                .ForMember(dest=> dest.CityName,
+                              opt => opt.MapFrom(src => src.Location.City.CityName));
+        }   
     }
 }
