@@ -8,10 +8,12 @@ namespace UmrahBookingSystem.Infrastructure.Repositories
 {
     public abstract class GenericRepository<TEntity, TKey> : IGenericRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
     {
+        protected readonly AppDbContext _dbContext;
         protected readonly DbSet<TEntity> _dbSet;
 
         protected GenericRepository(AppDbContext context)
         {
+            _dbContext = context;
             _dbSet = context.Set<TEntity>();
         }
 

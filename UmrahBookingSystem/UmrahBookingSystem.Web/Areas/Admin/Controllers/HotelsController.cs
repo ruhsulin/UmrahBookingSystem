@@ -85,5 +85,94 @@ namespace UmrahBookingSystem.Web.Areas.Admin.Controllers
                 .OrderBy(c => c.CityName)
                 .Select(c => new SelectListItem(c.CityName, c.Id.ToString()));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
+        {
+            var result = await _hotelService.GetForEditAsync(id, cancellationToken);
+            if (result.IsFailure || result.Value is null)
+                return NotFound();
+
+            var dto = result.Value;
+            var model = new EditHotelViewModel
+            {
+                Id = dto.Id,
+                HotelName = dto.HotelName,
+                Stars = dto.Stars,
+                CityId = dto.CityId,
+                StreetName = dto.StreetName,
+                DoorNumber = dto.DoorNumber,
+                PostalCode = dto.PostalCode,
+                Cities = await GetCityOptionsAsync(cancellationToken)
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditHotelViewModel model, CancellationToken cancellationToken)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Cities = await GetCityOptionsAsync(cancellationToken);
+                return View(model);
+            }
+
+            var dto = new UpdateHotelDto
+            {
+                Id = model.Id,
+                HotelName = model.HotelName,
+                Stars = model.Stars,
+                CityId = model.CityId,
+                StreetName = model.StreetName,
+                DoorNumber = model.DoorNumber,
+                PostalCode = model.PostalCode
+            };
+
+            var result = await _hotelService.UpdateAsync(dto, cancellationToken);
+
+            if (result.IsFailure)
+            {
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Message);
+
+                model.Cities = await GetCityOptionsAsync(cancellationToken);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        {
+            var result = await _hotelService.GetForEditAsync(id, cancellationToken);
+            if (result.IsFailure || result.Value is null)
+                return NotFound();
+
+            return View(new DeleteHotelViewModel { Id = id, HotelName = result.Value.HotelName });
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken cancellationToken)
+        {
+            var result = await _hotelService.DeleteAsync(id, cancellationToken);
+
+            if (result.IsFailure)
+            {
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Message);
+
+                var hotel = await _hotelService.GetForEditAsync(id, cancellationToken);
+                return View("Delete", new DeleteHotelViewModel
+                {
+                    Id = id,
+                    HotelName = hotel.Value?.HotelName ?? string.Empty
+                });
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

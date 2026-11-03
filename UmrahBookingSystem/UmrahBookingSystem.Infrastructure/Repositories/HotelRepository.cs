@@ -17,5 +17,27 @@ namespace UmrahBookingSystem.Infrastructure.Repositories
                          .AsNoTracking()
                          .ToListAsync(cancellationToken);
         }
+
+        public async Task<Hotel?> GetByIdWithLocationAsync(int id, CancellationToken cancellationToken = default)
+        {
+            // Tracked on purpose (no AsNoTracking): we will change and save this entity.
+            return await _dbSet
+                         .Include(h => h.Location)
+                         .FirstOrDefaultAsync(h => h.Id == id, cancellationToken);
+        }
+
+        public async Task<bool> IsUsedInPackageAsync(int hotelId, CancellationToken cancellationToken = default)
+        {
+            // The global query filter already skips soft-deleted PackageHotel rows.
+            return await _dbContext.Set<PackageHotel>()
+                         .AnyAsync(ph => ph.HotelId == hotelId, cancellationToken);
+        }
+
+        public void DeleteWithLocation(Hotel hotel)
+        {
+            // Both are only marked Deleted here. SaveChanges turns them into soft deletes.
+            _dbSet.Remove(hotel);
+            _dbContext.Set<Location>().Remove(hotel.Location);
+        }
     }
 }
