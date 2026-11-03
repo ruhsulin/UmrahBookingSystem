@@ -1,0 +1,17 @@
+﻿@model UmrahBookingSystem.Web.Areas.Admin.ViewModels.DeleteHotelViewModel
+
+@{
+    ViewData["Title"] = "Delete hotel";
+}
+
+<div class="card card-body" style="max-width: 640px">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <p>Are you sure you want to delete <strong>@Model.HotelName</strong>?</p>
+
+    <form asp-action="Delete" method="post" class="d-flex gap-2">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
