@@ -32,5 +32,12 @@ namespace UmrahBookingSystem.Infrastructure.Repositories
             return await _dbContext.Set<PackageHotel>()
                          .AnyAsync(ph => ph.HotelId == hotelId, cancellationToken);
         }
+
+        public void DeleteWithLocation(Hotel hotel)
+        {
+            // Both are only marked Deleted here. SaveChanges turns them into soft deletes.
+            _dbSet.Remove(hotel);
+            _dbContext.Set<Location>().Remove(hotel.Location);
+        }
     }
 }

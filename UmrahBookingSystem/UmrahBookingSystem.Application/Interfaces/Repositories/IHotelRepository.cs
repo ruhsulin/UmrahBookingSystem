@@ -9,5 +9,7 @@ namespace UmrahBookingSystem.Application.Interfaces.Repositories
         Task<Hotel?> GetByIdWithLocationAsync(int id, CancellationToken cancellationToken = default);
 
         Task<bool> IsUsedInPackageAsync(int hotelId, CancellationToken cancellationToken = default);
+
+        void DeleteWithLocation(Hotel hotel);
     }
 }
