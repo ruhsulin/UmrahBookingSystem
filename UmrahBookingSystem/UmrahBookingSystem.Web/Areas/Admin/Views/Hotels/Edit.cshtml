@@ -1,9 +1,15 @@
-﻿@model UmrahBookingSystem.Web.Areas.Admin.ViewModels.EditHotelViewModel  
+﻿@model UmrahBookingSystem.Web.Areas.Admin.ViewModels.EditHotelViewModel
 @{
-    ViewData["Title"] = "Edit hotel";  
+    ViewData["Title"] = "Edit hotel";
 }
 
-<form asp-action="Edit" method="post" class="card card-body" style="max-width: 640px">  
+@if (TempData["Error"] is string error)
+{
+    <div class="alert alert-danger" style="max-width: 640px">@error</div>
+}
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data"
+      class="card card-body mb-4" style="max-width: 640px">
     <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
     <div class="mb-3">
@@ -39,8 +45,49 @@
         </div>
     </div>
 
+    <div class="mb-3">
+        <label asp-for="Images" class="form-label">
+            Add images (@Model.ExistingImages.Count of 10 used)
+        </label>
+        <input asp-for="Images" type="file" multiple
+               accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+        <div class="form-text">JPG, PNG or WebP, max 5 MB each.</div>
+    </div>
+
     <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary">Save changes</button>
         <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
     </div>
 </form>
+
+@* Outside the edit form: HTML does not allow nested forms. *@
+<div class="card card-body" style="max-width: 640px">
+    <h5 class="mb-3">Images</h5>
+
+    @if (!Model.ExistingImages.Any())
+    {
+        <p class="text-muted mb-0">No images yet.</p>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var image in Model.ExistingImages)
+            {
+                <div class="col-6 col-md-4">
+                    <img src="@image.ImageUrl" alt="Hotel image"
+                         class="img-fluid rounded mb-2"
+                         style="aspect-ratio: 4 / 3; object-fit: cover; width: 100%" />
+
+                    <form asp-action="DeleteImage" method="post"
+                          onsubmit="return confirm('Delete this image?');">
+                        <input type="hidden" name="hotelId" value="@Model.Id" />
+                        <input type="hidden" name="imageId" value="@image.Id" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger w-100">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+</div>
