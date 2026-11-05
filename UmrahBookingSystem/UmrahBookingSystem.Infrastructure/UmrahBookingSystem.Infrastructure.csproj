@@ -28,7 +28,6 @@
 	  <Folder Include="BackgroundJobs\" />
 	  <Folder Include="Settings\" />
 	  <Folder Include="SignalR\" />
-	  <Folder Include="Services\" />
 	</ItemGroup>
 
 </Project>

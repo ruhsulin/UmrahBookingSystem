@@ -16,5 +16,7 @@ namespace UmrahBookingSystem.Application.Common.Errors
             new("FileStorage.InvalidUrl", "This file URL is not valid.");
         public static readonly Error Unexpected =
             new("FileStorage.Unexpected", "Something went wrong while saving the file.");
+        public static readonly Error DeleteFailed =
+            new("FileStorage.DeleteFailed", "Something went wrong while deleting the file.");
     }
 }
