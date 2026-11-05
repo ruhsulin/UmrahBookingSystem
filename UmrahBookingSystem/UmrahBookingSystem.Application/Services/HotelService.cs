@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using UmrahBookingSystem.Application.Common.Errors;
 using UmrahBookingSystem.Application.Common.Results;
 using UmrahBookingSystem.Application.DTOs.Hotels;
 using UmrahBookingSystem.Application.Interfaces.Repositories;
@@ -64,7 +65,7 @@ namespace UmrahBookingSystem.Application.Services
         {
             var hotel = await _hotelRepository.GetByIdWithLocationAsync(id, cancellationToken);
             if (hotel is null)
-                return Result<UpdateHotelDto>.Failure(Error.NotFound("Hotel"));
+                return Result<UpdateHotelDto>.Failure(HotelErrors.NotFound);
 
             return Result<UpdateHotelDto>.Success(_mapper.Map<UpdateHotelDto>(hotel));
         }
@@ -78,7 +79,7 @@ namespace UmrahBookingSystem.Application.Services
             // The Id comes from a hidden form field: user input, so verify it.
             var hotel = await _hotelRepository.GetByIdWithLocationAsync(dto.Id, cancellationToken);
             if (hotel is null)
-                return Result<int>.Failure(Error.NotFound("Hotel"));
+                return Result<int>.Failure(HotelErrors.NotFound);
 
             var city = await _cityRepository.GetByIdAsync(dto.CityId, cancellationToken);
             if (city is null)
@@ -100,11 +101,10 @@ namespace UmrahBookingSystem.Application.Services
         {
             var hotel = await _hotelRepository.GetByIdWithLocationAsync(id, cancellationToken);
             if (hotel is null)
-                return Result<int>.Failure(Error.NotFound("Hotel"));
+                return Result<int>.Failure(HotelErrors.NotFound);
 
             if (await _hotelRepository.IsUsedInPackageAsync(id, cancellationToken))
-                return Result<int>.Failure(new Error("Hotel.InUse",
-                    "This hotel is used in a package and cannot be deleted."));
+                return Result<int>.Failure(HotelErrors.InUse);
 
             _hotelRepository.DeleteWithLocation(hotel);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -117,16 +117,16 @@ namespace UmrahBookingSystem.Application.Services
             var errors = new List<Error>();
 
             if (string.IsNullOrWhiteSpace(hotelName))
-                errors.Add(new Error("Hotel.NameRequired", "Hotel name is required."));
+                errors.Add(HotelErrors.NameRequired);
 
             if (stars < 1 || stars > 5)
-                errors.Add(new Error("Hotel.StarsOutOfRange", "Hotel stars must be between 1 and 5."));
+                errors.Add(HotelErrors.StarsOutOfRange);
 
             if (cityId <= 0)
-                errors.Add(new Error("Hotel.CityRequired", "City is required."));
+                errors.Add(HotelErrors.CityRequired);
 
             if (string.IsNullOrWhiteSpace(streetName))
-                errors.Add(new Error("Hotel.StreetRequired", "Street name is required."));
+                errors.Add(HotelErrors.StreetRequired);
 
             return errors;
         }
