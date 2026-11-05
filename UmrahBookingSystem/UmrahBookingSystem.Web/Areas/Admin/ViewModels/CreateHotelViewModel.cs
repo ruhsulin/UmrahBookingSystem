@@ -15,6 +15,6 @@ namespace UmrahBookingSystem.Web.Areas.Admin.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> Cities { get; set; } = new List<SelectListItem>();
-        public List<HotelImageUploadDto> Images { get; set; } = new();
+        public List<IFormFile> Images { get; set; } = new();
     }
 }
