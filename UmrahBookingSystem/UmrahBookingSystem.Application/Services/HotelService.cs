@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using UmrahBookingSystem.Application.Common.Errors;
 using UmrahBookingSystem.Application.Common.Results;
 using UmrahBookingSystem.Application.DTOs.Hotels;
 using UmrahBookingSystem.Application.Interfaces.Repositories;
@@ -13,13 +14,18 @@ namespace UmrahBookingSystem.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICityRepository _cityRepository;
+        private readonly IFileStorageService _fileStorageService;
+        private const int MaxImagesPerHotel = 10;
+        private const string ImageFolder = "hotels";
 
-        public HotelService(IHotelRepository hotelRepository, ICityRepository cityRepository, IUnitOfWork unitOfWork, IMapper mapper)
+
+        public HotelService(IHotelRepository hotelRepository, ICityRepository cityRepository, IUnitOfWork unitOfWork, IMapper mapper, IFileStorageService fileStorageService)
         {
             _hotelRepository = hotelRepository;
             _cityRepository = cityRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _fileStorageService = fileStorageService;
         }
 
         public async Task<Result<IEnumerable<HotelDto>>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -33,6 +39,8 @@ namespace UmrahBookingSystem.Application.Services
         public async Task<Result<int>> CreateAsync(CreateHotelDto dto, CancellationToken cancellationToken = default)
         {
             var errors = ValidateHotelInput(dto.HotelName, dto.Stars, dto.CityId, dto.StreetName);
+            if (dto.Images.Count > MaxImagesPerHotel)
+                errors.Add(HotelErrors.TooManyImages(MaxImagesPerHotel));
 
             if (errors.Count > 0)
                 return Result<int>.Failure(errors.ToArray());
@@ -40,6 +48,10 @@ namespace UmrahBookingSystem.Application.Services
             var city = await _cityRepository.GetByIdAsync(dto.CityId, cancellationToken);
             if (city is null)
                 return Result<int>.Failure(Error.NotFound("City"));
+
+            var filesResult = await SaveImageFilesAsync(dto.Images, cancellationToken);
+            if (filesResult.IsFailure)
+                return Result<int>.Failure(filesResult.Errors.ToArray());
 
             var hotel = new Hotel
             {
@@ -51,20 +63,48 @@ namespace UmrahBookingSystem.Application.Services
                     StreetName = dto.StreetName.Trim(),
                     DoorNumber = dto.DoorNumber?.Trim(),
                     PostalCode = dto.PostalCode?.Trim()
-                }
+                },
+                HotelImages = filesResult.Value!
+                    .Select(url => new HotelImage { ImageUrl = url })
+                    .ToList()
             };
 
             await _hotelRepository.InsertAsync(hotel, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            // Hotel + Location + images in ONE save: all or nothing in the DB.
+            await SaveChangesOrDeleteFilesAsync(filesResult.Value!, cancellationToken);
 
             return Result<int>.Success(hotel.Id);
+        }
+        public async Task<Result<int>> AddImagesAsync(int hotelId, IReadOnlyList<HotelImageUploadDto> images,
+    CancellationToken cancellationToken = default)
+        {
+            if (images.Count == 0)
+                return Result<int>.Success(0);
+
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(hotelId, cancellationToken);
+            if (hotel is null)
+                return Result<int>.Failure(HotelErrors.NotFound);
+
+            if (hotel.HotelImages.Count + images.Count > MaxImagesPerHotel)
+                return Result<int>.Failure(HotelErrors.TooManyImages(MaxImagesPerHotel));
+
+            var filesResult = await SaveImageFilesAsync(images, cancellationToken);
+            if (filesResult.IsFailure)
+                return Result<int>.Failure(filesResult.Errors.ToArray());
+
+            foreach (var url in filesResult.Value!)
+                hotel.HotelImages.Add(new HotelImage { ImageUrl = url });
+
+            await SaveChangesOrDeleteFilesAsync(filesResult.Value!, cancellationToken);
+
+            return Result<int>.Success(filesResult.Value!.Count);
         }
 
         public async Task<Result<UpdateHotelDto>> GetForEditAsync(int id, CancellationToken cancellationToken = default)
         {
-            var hotel = await _hotelRepository.GetByIdWithLocationAsync(id, cancellationToken);
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(id, cancellationToken);
             if (hotel is null)
-                return Result<UpdateHotelDto>.Failure(Error.NotFound("Hotel"));
+                return Result<UpdateHotelDto>.Failure(HotelErrors.NotFound);
 
             return Result<UpdateHotelDto>.Success(_mapper.Map<UpdateHotelDto>(hotel));
         }
@@ -76,9 +116,9 @@ namespace UmrahBookingSystem.Application.Services
                 return Result<int>.Failure(errors.ToArray());
 
             // The Id comes from a hidden form field: user input, so verify it.
-            var hotel = await _hotelRepository.GetByIdWithLocationAsync(dto.Id, cancellationToken);
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(dto.Id, cancellationToken);
             if (hotel is null)
-                return Result<int>.Failure(Error.NotFound("Hotel"));
+                return Result<int>.Failure(HotelErrors.NotFound);
 
             var city = await _cityRepository.GetByIdAsync(dto.CityId, cancellationToken);
             if (city is null)
@@ -98,18 +138,89 @@ namespace UmrahBookingSystem.Application.Services
 
         public async Task<Result<int>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            var hotel = await _hotelRepository.GetByIdWithLocationAsync(id, cancellationToken);
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(id, cancellationToken);
             if (hotel is null)
-                return Result<int>.Failure(Error.NotFound("Hotel"));
+                return Result<int>.Failure(HotelErrors.NotFound);
 
             if (await _hotelRepository.IsUsedInPackageAsync(id, cancellationToken))
-                return Result<int>.Failure(new Error("Hotel.InUse",
-                    "This hotel is used in a package and cannot be deleted."));
+                return Result<int>.Failure(HotelErrors.InUse);
 
-            _hotelRepository.DeleteWithLocation(hotel);
+            // Collect the URLs before deleting: after the save we still need them.
+            var imageUrls = hotel.HotelImages.Select(i => i.ImageUrl).ToList();
+
+            _hotelRepository.DeleteWithDetails(hotel);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await DeleteFilesAsync(imageUrls);
 
             return Result<int>.Success(id);
+        }
+
+        private async Task<Result<List<string>>> SaveImageFilesAsync(
+          IReadOnlyList<HotelImageUploadDto> images, CancellationToken cancellationToken)
+        {
+            var savedUrls = new List<string>();
+            try
+            {
+                foreach (var image in images)
+                {
+                    var saveResult = await _fileStorageService.SaveAsync(
+                        image.Content, image.FileName, ImageFolder, cancellationToken);
+
+                    if (saveResult.IsFailure)
+                    {
+                        await DeleteFilesAsync(savedUrls);
+                        return Result<List<string>>.Failure(saveResult.Errors.ToArray());
+                    }
+
+                    savedUrls.Add(saveResult.Value!);
+                }
+            }
+            catch
+            {
+                await DeleteFilesAsync(savedUrls);
+                throw;
+            }
+
+            return Result<List<string>>.Success(savedUrls);
+        }
+
+        private async Task SaveChangesOrDeleteFilesAsync(List<string> newFileUrls, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+            catch
+            {
+                await DeleteFilesAsync(newFileUrls);
+                throw;
+            }
+        }
+
+        public async Task<Result<int>> DeleteImageAsync(int hotelId, int imageId,
+            CancellationToken cancellationToken = default)
+        {
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(hotelId, cancellationToken);
+            if (hotel is null)
+                return Result<int>.Failure(HotelErrors.NotFound);
+
+            var image = hotel.HotelImages.FirstOrDefault(i => i.Id == imageId);
+            if (image is null)
+                return Result<int>.Failure(HotelErrors.ImageNotFound);
+
+            var imageUrl = image.ImageUrl;
+
+            _hotelRepository.RemoveImage(image);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await DeleteFilesAsync(new[] { imageUrl });
+
+            return Result<int>.Success(imageId);
+        }
+
+        private async Task DeleteFilesAsync(IEnumerable<string> urls)
+        {
+            foreach (var url in urls)
+                await _fileStorageService.DeleteAsync(url, CancellationToken.None);
         }
 
         private static List<Error> ValidateHotelInput(string hotelName, int stars, int cityId, string streetName)
@@ -117,16 +228,16 @@ namespace UmrahBookingSystem.Application.Services
             var errors = new List<Error>();
 
             if (string.IsNullOrWhiteSpace(hotelName))
-                errors.Add(new Error("Hotel.NameRequired", "Hotel name is required."));
+                errors.Add(HotelErrors.NameRequired);
 
             if (stars < 1 || stars > 5)
-                errors.Add(new Error("Hotel.StarsOutOfRange", "Hotel stars must be between 1 and 5."));
+                errors.Add(HotelErrors.StarsOutOfRange);
 
             if (cityId <= 0)
-                errors.Add(new Error("Hotel.CityRequired", "City is required."));
+                errors.Add(HotelErrors.CityRequired);
 
             if (string.IsNullOrWhiteSpace(streetName))
-                errors.Add(new Error("Hotel.StreetRequired", "Street name is required."));
+                errors.Add(HotelErrors.StreetRequired);
 
             return errors;
         }

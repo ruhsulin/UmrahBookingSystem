@@ -24,6 +24,7 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
+                <th style="width: 80px"></th>
                 <th>Name</th>
                 <th>Stars</th>
                 <th>City</th>
@@ -33,7 +34,22 @@ else
         <tbody>
             @foreach (var hotel in Model)
             {
-                <tr>
+                <tr class="align-middle">
+                    <td>
+                        @if (hotel.ThumbnailUrl is not null)
+                        {
+                            <img src="@hotel.ThumbnailUrl" alt="@hotel.HotelName"
+                                 width="64" height="48" loading="lazy"
+                                 class="rounded" style="object-fit: cover" />
+                        }
+                        else
+                        {
+                            <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted"
+                                 style="width: 64px; height: 48px">
+                                <i class="bi bi-image"></i>
+                            </div>
+                        }
+                    </td>
                     <td>@hotel.HotelName</td>
                     <td>@hotel.Stars</td>
                     <td>@hotel.CityName</td>

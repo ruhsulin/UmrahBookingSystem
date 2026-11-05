@@ -15,5 +15,11 @@ namespace UmrahBookingSystem.Application.Interfaces.Services
 
         Task<Result<int>> DeleteAsync(int id, CancellationToken cancellationToken = default);
 
+        Task<Result<int>> AddImagesAsync(int hotelId, IReadOnlyList<HotelImageUploadDto> images,
+            CancellationToken cancellationToken = default);
+
+        Task<Result<int>> DeleteImageAsync(int hotelId, int imageId,
+            CancellationToken cancellationToken = default);
+
     }
 }

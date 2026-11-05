@@ -8,5 +8,6 @@
         public string StreetName { get; set; } = string.Empty;
         public string? DoorNumber { get; set; } 
         public string? PostalCode { get; set; }
+        public List<HotelImageUploadDto> Images { get; set; } = new();
     }
 }
