@@ -39,6 +39,8 @@ namespace UmrahBookingSystem.Application.Services
         public async Task<Result<int>> CreateAsync(CreateHotelDto dto, CancellationToken cancellationToken = default)
         {
             var errors = ValidateHotelInput(dto.HotelName, dto.Stars, dto.CityId, dto.StreetName);
+            if (dto.Images.Count > MaxImagesPerHotel)
+                errors.Add(HotelErrors.TooManyImages(MaxImagesPerHotel));
 
             if (errors.Count > 0)
                 return Result<int>.Failure(errors.ToArray());
@@ -46,6 +48,10 @@ namespace UmrahBookingSystem.Application.Services
             var city = await _cityRepository.GetByIdAsync(dto.CityId, cancellationToken);
             if (city is null)
                 return Result<int>.Failure(Error.NotFound("City"));
+
+            var filesResult = await SaveImageFilesAsync(dto.Images, cancellationToken);
+            if (filesResult.IsFailure)
+                return Result<int>.Failure(filesResult.Errors.ToArray());
 
             var hotel = new Hotel
             {
@@ -57,13 +63,41 @@ namespace UmrahBookingSystem.Application.Services
                     StreetName = dto.StreetName.Trim(),
                     DoorNumber = dto.DoorNumber?.Trim(),
                     PostalCode = dto.PostalCode?.Trim()
-                }
+                },
+                HotelImages = filesResult.Value!
+                    .Select(url => new HotelImage { ImageUrl = url })
+                    .ToList()
             };
 
             await _hotelRepository.InsertAsync(hotel, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            // Hotel + Location + images in ONE save: all or nothing in the DB.
+            await SaveChangesOrDeleteFilesAsync(filesResult.Value!, cancellationToken);
 
             return Result<int>.Success(hotel.Id);
+        }
+        public async Task<Result<int>> AddImagesAsync(int hotelId, IReadOnlyList<HotelImageUploadDto> images,
+    CancellationToken cancellationToken = default)
+        {
+            if (images.Count == 0)
+                return Result<int>.Success(0);
+
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(hotelId, cancellationToken);
+            if (hotel is null)
+                return Result<int>.Failure(HotelErrors.NotFound);
+
+            if (hotel.HotelImages.Count + images.Count > MaxImagesPerHotel)
+                return Result<int>.Failure(HotelErrors.TooManyImages(MaxImagesPerHotel));
+
+            var filesResult = await SaveImageFilesAsync(images, cancellationToken);
+            if (filesResult.IsFailure)
+                return Result<int>.Failure(filesResult.Errors.ToArray());
+
+            foreach (var url in filesResult.Value!)
+                hotel.HotelImages.Add(new HotelImage { ImageUrl = url });
+
+            await SaveChangesOrDeleteFilesAsync(filesResult.Value!, cancellationToken);
+
+            return Result<int>.Success(filesResult.Value!.Count);
         }
 
         public async Task<Result<UpdateHotelDto>> GetForEditAsync(int id, CancellationToken cancellationToken = default)
@@ -121,19 +155,9 @@ namespace UmrahBookingSystem.Application.Services
             return Result<int>.Success(id);
         }
 
-        public async Task<Result<int>> AddImagesAsync(int hotelId, IReadOnlyList<HotelImageUploadDto> images,
-    CancellationToken cancellationToken = default)
+        private async Task<Result<List<string>>> SaveImageFilesAsync(
+          IReadOnlyList<HotelImageUploadDto> images, CancellationToken cancellationToken)
         {
-            if (images.Count == 0)
-                return Result<int>.Success(0);
-
-            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(hotelId, cancellationToken);
-            if (hotel is null)
-                return Result<int>.Failure(HotelErrors.NotFound);
-
-            if (hotel.HotelImages.Count + images.Count > MaxImagesPerHotel)
-                return Result<int>.Failure(HotelErrors.TooManyImages(MaxImagesPerHotel));
-
             var savedUrls = new List<string>();
             try
             {
@@ -145,22 +169,32 @@ namespace UmrahBookingSystem.Application.Services
                     if (saveResult.IsFailure)
                     {
                         await DeleteFilesAsync(savedUrls);
-                        return Result<int>.Failure(saveResult.Errors.ToArray());
+                        return Result<List<string>>.Failure(saveResult.Errors.ToArray());
                     }
 
                     savedUrls.Add(saveResult.Value!);
-                    hotel.HotelImages.Add(new HotelImage { ImageUrl = saveResult.Value! });
                 }
-
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
             }
             catch
             {
                 await DeleteFilesAsync(savedUrls);
-                throw; 
+                throw;
             }
 
-            return Result<int>.Success(savedUrls.Count);
+            return Result<List<string>>.Success(savedUrls);
+        }
+
+        private async Task SaveChangesOrDeleteFilesAsync(List<string> newFileUrls, CancellationToken cancellationToken)
+        {
+            try
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+            catch
+            {
+                await DeleteFilesAsync(newFileUrls);
+                throw;
+            }
         }
 
         public async Task<Result<int>> DeleteImageAsync(int hotelId, int imageId,

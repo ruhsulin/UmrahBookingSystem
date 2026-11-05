@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using UmrahBookingSystem.Application.DTOs.Hotels;
 
 namespace UmrahBookingSystem.Web.Areas.Admin.ViewModels
 {
@@ -14,5 +15,6 @@ namespace UmrahBookingSystem.Web.Areas.Admin.ViewModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> Cities { get; set; } = new List<SelectListItem>();
+        public List<HotelImageUploadDto> Images { get; set; } = new();
     }
 }
