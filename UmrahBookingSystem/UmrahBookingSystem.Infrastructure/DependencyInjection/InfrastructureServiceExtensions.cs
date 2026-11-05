@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using UmrahBookingSystem.Application.Interfaces.Repositories;
+using UmrahBookingSystem.Application.Interfaces.Services;
 using UmrahBookingSystem.Infrastructure.Persistence.Context;
 using UmrahBookingSystem.Infrastructure.Persistence.Seed;
 using UmrahBookingSystem.Infrastructure.Repositories;
+using UmrahBookingSystem.Infrastructure.Services;
 
 namespace UmrahBookingSystem.Infrastructure.DependencyInjection
 {
@@ -17,6 +18,7 @@ namespace UmrahBookingSystem.Infrastructure.DependencyInjection
         {
             services.AddPersistence(configuration);
             services.AddRepositories();
+            services.AddServices();
             services.AddHttpContextAccessor();
 
             return services;
@@ -50,6 +52,13 @@ namespace UmrahBookingSystem.Infrastructure.DependencyInjection
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<IFileStorageService, LocalFileStorageService>();
 
             return services;
         }
