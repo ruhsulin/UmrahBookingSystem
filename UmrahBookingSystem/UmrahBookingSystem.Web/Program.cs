@@ -32,7 +32,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // 3. Static files (serve CSS/JS/images without routing)
-app.MapStaticAssets();
+app.MapStaticAssets(); // files known at build time like: css, js, lib
+app.UseStaticFiles(); // files added at runtime like: wwwroot/uploads
 
 // 4. Routing (figure out which controller)
 app.UseRouting();

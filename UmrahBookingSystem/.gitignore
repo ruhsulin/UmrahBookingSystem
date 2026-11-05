@@ -8,8 +8,10 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.slnx
 
 # Cache files
 *.vsidx
 *.v2
+
+# Runtime uploads (data, not code)
+**/wwwroot/uploads/
