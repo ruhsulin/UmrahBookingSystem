@@ -6,10 +6,13 @@ namespace UmrahBookingSystem.Application.Interfaces.Repositories
     {
         Task<IEnumerable<Hotel>> GetAllWithCityAsync(CancellationToken cancellationToken = default);
 
-        Task<Hotel?> GetByIdWithLocationAsync(int id, CancellationToken cancellationToken = default);
+        Task<Hotel?> GetByIdWithDetailsAsync(int id, CancellationToken cancellationToken = default);
 
         Task<bool> IsUsedInPackageAsync(int hotelId, CancellationToken cancellationToken = default);
 
-        void DeleteWithLocation(Hotel hotel);
+        // Rsoft-deletes hotel + Location + all images
+        void DeleteWithDetails(Hotel hotel);
+
+        void RemoveImage(HotelImage image);
     }
 }

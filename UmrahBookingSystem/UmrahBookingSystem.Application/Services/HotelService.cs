@@ -63,7 +63,7 @@ namespace UmrahBookingSystem.Application.Services
 
         public async Task<Result<UpdateHotelDto>> GetForEditAsync(int id, CancellationToken cancellationToken = default)
         {
-            var hotel = await _hotelRepository.GetByIdWithLocationAsync(id, cancellationToken);
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(id, cancellationToken);
             if (hotel is null)
                 return Result<UpdateHotelDto>.Failure(HotelErrors.NotFound);
 
@@ -77,7 +77,7 @@ namespace UmrahBookingSystem.Application.Services
                 return Result<int>.Failure(errors.ToArray());
 
             // The Id comes from a hidden form field: user input, so verify it.
-            var hotel = await _hotelRepository.GetByIdWithLocationAsync(dto.Id, cancellationToken);
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(dto.Id, cancellationToken);
             if (hotel is null)
                 return Result<int>.Failure(HotelErrors.NotFound);
 
@@ -99,14 +99,14 @@ namespace UmrahBookingSystem.Application.Services
 
         public async Task<Result<int>> DeleteAsync(int id, CancellationToken cancellationToken = default)
         {
-            var hotel = await _hotelRepository.GetByIdWithLocationAsync(id, cancellationToken);
+            var hotel = await _hotelRepository.GetByIdWithDetailsAsync(id, cancellationToken);
             if (hotel is null)
                 return Result<int>.Failure(HotelErrors.NotFound);
 
             if (await _hotelRepository.IsUsedInPackageAsync(id, cancellationToken))
                 return Result<int>.Failure(HotelErrors.InUse);
 
-            _hotelRepository.DeleteWithLocation(hotel);
+            _hotelRepository.DeleteWithDetails(hotel);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<int>.Success(id);
