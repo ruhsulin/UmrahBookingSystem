@@ -11,15 +11,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
       - name: Restore dependencies
         run: dotnet restore UmrahBookingSystem/UmrahBookingSystem.slnx
+
+      - name: Check for vulnerable packages
+        run: |
+          dotnet list UmrahBookingSystem/UmrahBookingSystem.slnx package --vulnerable --include-transitive | tee audit.txt
+          if grep -q "has the following vulnerable packages" audit.txt; then
+            echo "::error::Vulnerable packages found. See the output above."
+            exit 1
+          fi
 
       - name: Build
         run: dotnet build UmrahBookingSystem/UmrahBookingSystem.slnx --no-restore
