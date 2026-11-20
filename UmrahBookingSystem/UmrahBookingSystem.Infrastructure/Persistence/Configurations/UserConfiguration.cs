@@ -55,12 +55,6 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 
-           builder.HasOne(u => u.Role)
-                .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
-
            builder.Property( u => u.IsDeleted)
                 .HasDefaultValue(false);
         }

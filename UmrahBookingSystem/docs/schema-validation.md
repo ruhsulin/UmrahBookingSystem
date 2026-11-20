@@ -1,12 +1,15 @@
 ## 1. account & Registration
 
 
-| Rule                   | Enforcement                                      |
-| ---------------------- | ------------------------------------------------ |
-| User must be 18+       | Application layer (validation using DateOfBirth) |
-| Email is unique        | Database constraint                              |
-| User must have role    | FK: UserRoleId                                   |
-| Phone number is unique | Database constraint								|
+| Rule										    | Enforcement																			 |
+| --------------------------------------------- | -------------------------------------------------------------							 |
+| User must be 18+								| Application layer (validation using DateOfBirth)									     |
+| Email is unique								| Database constraint																	 |
+| User must have role							| Identity roles (AspNetUserRoles). Admin and Client are seeded							 |
+| Phone number is unique						| Database constraint																	 |
+| User must have role (if they have an account) | Identity roles (AspNetUserRoles). Admin and Client are seeded							 |
+| Client without an account has no role         | Roles belong to accounts only. A client can buy the package without having an account. |
+| Account must belong to a User                 | FK: AspNetUsers.Id -> Users.Id                                                         |
 
 ## 2. Booking & Capacity
 

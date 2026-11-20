@@ -11,7 +11,6 @@ namespace UmrahBookingSystem.Domain.Entities
         public DateTime DateOfBirth { get; set; }
         public string? ProfilePhotoUrl { get; set; }
         public int? LocationId { get; set; }
-        public int? RoleId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
@@ -19,7 +18,6 @@ namespace UmrahBookingSystem.Domain.Entities
 
         // Navigation properties
         public Location? Location { get; set; }
-        public UserRole? Role { get; set; }
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public ICollection<WaitingList> WaitingLists { get; set; } = new List<WaitingList>();
