@@ -93,6 +93,7 @@ namespace UmrahBookingSystem.Infrastructure.DependencyInjection
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }
