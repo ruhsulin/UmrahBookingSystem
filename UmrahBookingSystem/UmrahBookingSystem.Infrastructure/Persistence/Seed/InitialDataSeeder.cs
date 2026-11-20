@@ -1,4 +1,5 @@
-﻿using UmrahBookingSystem.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using UmrahBookingSystem.Domain.Entities;
 using UmrahBookingSystem.Infrastructure.Persistence.Context;
 
 namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
@@ -118,14 +119,31 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
             context.SaveChanges();
         }
 
+        private static void SeedRoles(AppDbContext context)
+        {
+            foreach (var name in new[] { "Admin", "Client" })
+            {
+                if (!context.Roles.Any(r => r.NormalizedName == name.ToUpperInvariant()))
+                {
+                    context.Roles.Add(new IdentityRole
+                    {
+                        Name = name,
+                        NormalizedName = name.ToUpperInvariant()
+                    });
+                }
+            }
+
+            context.SaveChanges();
+        }
+
         public static void Seed(AppDbContext context)
         {
             var bootstrapAdmin = SeedBootstrapAdmin(context);
+            SeedRoles(context);
             SeedCountries(context, bootstrapAdmin);
             var city = SeedCities(context, bootstrapAdmin);
             var location = SeedLocations(context, bootstrapAdmin, city);
             PromoteBootstrapAdmin(context, bootstrapAdmin, location);  // ← last, after everything else exists
-
         }
     }
 }
