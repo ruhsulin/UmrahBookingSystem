@@ -8,7 +8,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
         private static User SeedBootstrapAdmin(AppDbContext context)
         {
             // Check if system user already exists
-            var existing = context.Users.FirstOrDefault(u => u.Id == "system");
+            var existing = context.DomainUsers.FirstOrDefault(u => u.Id == "system");
             if (existing != null)
                 return existing;
 
@@ -25,7 +25,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
                 IsDeleted = false
             };
 
-            context.Users.Add(systemUser);
+            context.DomainUsers.Add(systemUser);
             context.SaveChanges();
 
             return systemUser;

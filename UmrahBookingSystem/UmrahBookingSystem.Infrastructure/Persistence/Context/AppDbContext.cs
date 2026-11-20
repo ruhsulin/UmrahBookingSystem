@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using UmrahBookingSystem.Domain.Common;
 using UmrahBookingSystem.Domain.Entities;
+using UmrahBookingSystem.Infrastructure.Identity;
 
 namespace UmrahBookingSystem.Infrastructure.Persistence.Context
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -108,7 +110,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Context
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PackageRoom> PackageRooms { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> DomainUsers { get; set; }
         public DbSet<WaitingList> WaitingLists { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
