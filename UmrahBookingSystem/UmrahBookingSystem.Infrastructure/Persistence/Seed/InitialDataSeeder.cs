@@ -21,7 +21,6 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
                 PhoneNumber = "0000000000",
                 DateOfBirth = new DateTime(1991, 1, 1),
                 LocationId = null, 
-                RoleId = null, 
                 CreatedAt = DateTime.UtcNow,
                 IsDeleted = false
             };
@@ -30,34 +29,6 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
             context.SaveChanges();
 
             return systemUser;
-        }
-
-        private static UserRole SeedRoles(AppDbContext context, User createdBy)
-        {
-            var adminRole = context.UserRoles.FirstOrDefault(r => r.RoleName == "Admin");
-            if(adminRole == null)
-            {
-                adminRole = new UserRole
-                {
-                    RoleName = "Admin",
-                    CreatedBy = createdBy.Id,
-                    CreatedAt = DateTime.UtcNow
-                };
-                context.UserRoles.Add(adminRole);
-            }
-
-            if(!context.UserRoles.Any(r => r.RoleName == "Client"))
-            {
-                context.UserRoles.Add(new UserRole
-                {
-                    RoleName = "Client",
-                    CreatedBy = createdBy.Id,
-                    CreatedAt = DateTime.UtcNow
-                });
-            }
-
-            context.SaveChanges();
-            return adminRole;
         }
 
         private static void SeedCountries(AppDbContext context, User createdBy)
@@ -137,25 +108,23 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
             return location;
         }
 
-
-        private static void PromoteBootstrapAdmin(AppDbContext context, User admin, UserRole adminRole, Location location)
+        private static void PromoteBootstrapAdmin(AppDbContext context, User admin, Location location)
         {
-            if (admin.RoleId != null && admin.LocationId != null)
+            if (admin.LocationId != null)
                 return;
 
-            admin.RoleId = adminRole.Id;
             admin.LocationId = location.Id;
 
             context.SaveChanges();
         }
+
         public static void Seed(AppDbContext context)
         {
             var bootstrapAdmin = SeedBootstrapAdmin(context);
-            var adminRole = SeedRoles(context, bootstrapAdmin);
             SeedCountries(context, bootstrapAdmin);
             var city = SeedCities(context, bootstrapAdmin);
             var location = SeedLocations(context, bootstrapAdmin, city);
-            PromoteBootstrapAdmin(context, bootstrapAdmin, adminRole, location);  // ← last, after everything else exists
+            PromoteBootstrapAdmin(context, bootstrapAdmin, location);  // ← last, after everything else exists
 
         }
     }
