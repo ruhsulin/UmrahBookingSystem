@@ -1,15 +1,14 @@
-## 1. account & Registration
+## 1. Account & Registration
 
-
-| Rule										    | Enforcement																			 |
-| --------------------------------------------- | -------------------------------------------------------------							 |
-| User must be 18+								| Application layer (validation using DateOfBirth)									     |
-| Email is unique								| Database constraint																	 |
-| User must have role							| Identity roles (AspNetUserRoles). Admin and Client are seeded							 |
-| Phone number is unique						| Database constraint																	 |
-| User must have role (if they have an account) | Identity roles (AspNetUserRoles). Admin and Client are seeded							 |
-| Client without an account has no role         | Roles belong to accounts only. A client can buy the package without having an account. |
-| Account must belong to a User                 | FK: AspNetUsers.Id -> Users.Id                                                         |
+| Rule										             | Enforcement																		      	    |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| User must be 18+								         | Application layer (validation using DateOfBirth)									            |
+| Email is unique							             | Database constraint																	        |
+| Phone number is not unique (families share one number) | Not enforced, decision in UBS-30														        |
+| AspNetUsers.PhoneNumber is not used and stays NULL     | CHECK constraint CK_AspNetUsers_PhoneNumber_IsNull. The source of truth is Users.PhoneNumber |
+| User must have role (if they have an account)			 | Identity roles (AspNetUserRoles). Admin and Client are seeded					            |
+| Client without an account has no role					 | Roles belong to accounts only. A client can buy the package without having an account.       |
+| Account must belong to a User							 | FK: AspNetUsers.Id -> Users.Id                                                               |
 
 ## 2. Booking & Capacity
 
