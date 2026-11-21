@@ -13,6 +13,11 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
                 .WithOne()
                 .HasForeignKey<ApplicationUser>(a => a.Id)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // PhoneNumber is not used on accounts; the only phone number is Users.PhoneNumber.
+            builder.ToTable("AspNetUsers", t => t.HasCheckConstraint(
+                "CK_AspNetUsers_PhoneNumber_IsNull",
+                "[PhoneNumber] IS NULL"));
         }
     }
 }

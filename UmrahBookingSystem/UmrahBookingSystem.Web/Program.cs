@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using UmrahBookingSystem.Application.DependencyInjection;
 using UmrahBookingSystem.Infrastructure.DependencyInjection;
 using UmrahBookingSystem.Infrastructure.Persistence.Context;
+using UmrahBookingSystem.Infrastructure.Persistence.Seed;
 using UmrahBookingSystem.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     context.Database.Migrate();
+    await AdminSeeder.SeedAsync(scope.ServiceProvider);
 }
 
 // 1. Exception handling (wraps everything)

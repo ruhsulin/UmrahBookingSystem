@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UmrahBookingSystem.Application.Interfaces.Repositories;
 using UmrahBookingSystem.Application.Interfaces.Services;
+using UmrahBookingSystem.Infrastructure.Identity;
 using UmrahBookingSystem.Infrastructure.Persistence.Context;
 using UmrahBookingSystem.Infrastructure.Persistence.Seed;
 using UmrahBookingSystem.Infrastructure.Repositories;
@@ -17,6 +20,7 @@ namespace UmrahBookingSystem.Infrastructure.DependencyInjection
               IConfiguration configuration)
         {
             services.AddPersistence(configuration);
+            services.AddIdentityServices();
             services.AddRepositories();
             services.AddServices();
             services.AddHttpContextAccessor();
@@ -47,6 +51,36 @@ namespace UmrahBookingSystem.Infrastructure.DependencyInjection
             return services;  
         }
 
+        private static IServiceCollection AddIdentityServices(this IServiceCollection services)
+        {
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+
+                // Password rules: at least 8 characters and one digit, nothing else.
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+            })
+            .AddEntityFrameworkStores<AppDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.SameSite = SameSiteMode.Lax;
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
+
+            return services;
+        }
+
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -59,6 +93,7 @@ namespace UmrahBookingSystem.Infrastructure.DependencyInjection
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IFileStorageService, LocalFileStorageService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

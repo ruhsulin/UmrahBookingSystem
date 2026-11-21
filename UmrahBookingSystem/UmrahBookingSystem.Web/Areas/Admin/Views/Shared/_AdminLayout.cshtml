@@ -73,11 +73,15 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i>
-                            <span class="d-none d-xl-inline ms-1">Admin</span>
+                            <span class="d-none d-xl-inline ms-1">@(User.Identity?.Name ?? "Admin")</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item text-danger" href="#">Sign out</a></li>
+                            <li>
+                                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="dropdown-item text-danger">Sign out</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                 </ul>
