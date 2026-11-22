@@ -7,8 +7,7 @@ using UmrahBookingSystem.Web.Areas.Admin.ViewModels;
 
 namespace UmrahBookingSystem.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    public class HotelsController : Controller
+    public class HotelsController : AdminControllerBase
     {
         // 10 images x 5 MB + form fields. Kestrel's default limit is ~30 MB.
         private const long MaxUploadRequestBytes = 55 * 1024 * 1024;

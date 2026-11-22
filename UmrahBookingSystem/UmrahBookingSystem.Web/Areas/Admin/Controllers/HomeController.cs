@@ -2,8 +2,7 @@
 
 namespace UmrahBookingSystem.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    public class HomeController : Controller
+    public class HomeController : AdminControllerBase
     {
         public IActionResult Index() => View();
     }
