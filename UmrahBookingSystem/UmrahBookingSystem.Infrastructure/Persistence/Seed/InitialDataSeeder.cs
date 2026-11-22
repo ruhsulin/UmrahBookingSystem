@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using UmrahBookingSystem.Domain.Constants;
 using UmrahBookingSystem.Domain.Entities;
 using UmrahBookingSystem.Infrastructure.Persistence.Context;
 
@@ -121,7 +122,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
 
         private static void SeedRoles(AppDbContext context)
         {
-            foreach (var name in new[] { "Admin", "Client" })
+            foreach (var name in new[] { Roles.Admin, Roles.Client })
             {
                 if (!context.Roles.Any(r => r.NormalizedName == name.ToUpperInvariant()))
                 {

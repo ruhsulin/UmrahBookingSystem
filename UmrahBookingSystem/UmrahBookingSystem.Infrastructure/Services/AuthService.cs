@@ -5,6 +5,7 @@ using System.Text;
 using UmrahBookingSystem.Application.Common.Errors;
 using UmrahBookingSystem.Application.Common.Results;
 using UmrahBookingSystem.Application.Interfaces.Services;
+using UmrahBookingSystem.Domain.Constants;
 using UmrahBookingSystem.Infrastructure.Identity;
 
 namespace UmrahBookingSystem.Infrastructure.Services
@@ -44,7 +45,7 @@ namespace UmrahBookingSystem.Infrastructure.Services
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            var role = roles.Contains("Admin") ? "Admin" : "Client";
+            var role = roles.Contains(Roles.Admin) ? Roles.Admin : Roles.Client;
 
             return Result<string>.Success(role);
         }
