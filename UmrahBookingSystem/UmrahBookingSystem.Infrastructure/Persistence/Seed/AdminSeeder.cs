@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using UmrahBookingSystem.Domain.Constants;
 using UmrahBookingSystem.Domain.Entities;
 using UmrahBookingSystem.Infrastructure.Identity;
 using UmrahBookingSystem.Infrastructure.Persistence.Context;
@@ -64,7 +65,7 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Seed
                     throw new InvalidOperationException(
                         "Admin seed failed: " + string.Join("; ", created.Errors.Select(e => e.Description)));
 
-                var inRole = await userManager.AddToRoleAsync(account, "Admin");
+                var inRole = await userManager.AddToRoleAsync(account, Roles.Admin);
                 if (!inRole.Succeeded)
                     throw new InvalidOperationException(
                         "Admin seed failed: " + string.Join("; ", inRole.Errors.Select(e => e.Description)));

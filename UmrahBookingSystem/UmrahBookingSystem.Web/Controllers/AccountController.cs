@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UmrahBookingSystem.Application.Interfaces.Services;
+using UmrahBookingSystem.Domain.Constants;
 using UmrahBookingSystem.Web.ViewModels;
 
 namespace UmrahBookingSystem.Web.Controllers
@@ -41,7 +42,7 @@ namespace UmrahBookingSystem.Web.Controllers
             if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
                 return LocalRedirect(model.ReturnUrl);
 
-            return result.Value == "Admin"
+            return result.Value == Roles.Admin
                 ? LocalRedirect("/admin")
                 : LocalRedirect("/");
         }
