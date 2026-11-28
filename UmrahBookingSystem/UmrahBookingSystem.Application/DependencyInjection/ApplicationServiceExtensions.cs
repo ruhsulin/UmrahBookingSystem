@@ -13,6 +13,7 @@ namespace UmrahBookingSystem.Application.DependencyInjection
             services.AddAutoMapper(cfg => { }, typeof(BookingProfile));
             services.AddScoped<IHotelService, HotelService>();
             services.AddScoped<ICityService, CityService>();
+            services.AddScoped<IServiceService, ServiceService>();
             return services;
         }
     }
