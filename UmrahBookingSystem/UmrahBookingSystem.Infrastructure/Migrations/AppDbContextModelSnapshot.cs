@@ -1299,6 +1299,11 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
 
                     b.HasIndex("DeletedBy");
 
+                    b.HasIndex("ServiceName")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Services_ServiceName")
+                        .HasFilter("[IsDeleted] = 0");
+
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("Services", (string)null);

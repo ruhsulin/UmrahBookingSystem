@@ -1,0 +1,48 @@
+﻿@model IEnumerable<UmrahBookingSystem.Application.DTOs.Services.ServiceDto>
+
+@{
+    ViewData["Title"] = "Services";
+}
+
+<div class="d-flex justify-content-end mb-3">
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> New service
+    </a>
+</div>
+
+@if (ViewData["Error"] is string error)
+{
+    <div class="alert alert-danger">@error</div>
+}
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No services yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in Model)
+            {
+                <tr class="align-middle">
+                    <td>@service.ServiceName</td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@service.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@service.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
