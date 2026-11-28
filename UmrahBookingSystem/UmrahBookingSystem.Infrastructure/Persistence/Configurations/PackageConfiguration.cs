@@ -70,6 +70,10 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
 
             builder.Property(p => p.AvailableSpots)
                 .IsRequired();
+
+            builder.Property(p => p.InfantPrice)
+                .IsRequired(false)
+                .HasPrecision(18, 2);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace UmrahBookingSystem.Domain.Entities
         public string DepartureFlightNumber { get; set; } = null!;
         public string ReturnFlightNumber { get; set; } = null!;
         public DateTime ReturnTime { get; set; }
+        public decimal? InfantPrice { get; set; }
         public int AvailableSpots { get; set; }
 
         public ICollection<PackageRoom> PackageRooms { get; set; } = new List<PackageRoom>();
