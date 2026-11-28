@@ -799,6 +799,10 @@ namespace UmrahBookingSystem.Infrastructure.Migrations
                         .HasMaxLength(2500)
                         .HasColumnType("nvarchar(2500)");
 
+                    b.Property<decimal?>("InfantPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
