@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UmrahBookingSystem.Application.DTOs.Auth;
 using UmrahBookingSystem.Application.Interfaces.Services;
 using UmrahBookingSystem.Domain.Constants;
 using UmrahBookingSystem.Web.ViewModels;
@@ -13,6 +14,48 @@ namespace UmrahBookingSystem.Web.Controllers
         public AccountController(IAuthService authService)
         {
             _authService = authService;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+            if (User.Identity?.IsAuthenticated == true)
+                return LocalRedirect("/");
+
+            return View(new RegisterViewModel());
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (User.Identity?.IsAuthenticated == true)
+                return LocalRedirect("/");
+
+            var dto = new RegisterDto
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber,
+                DateOfBirth = model.DateOfBirth,
+                Password = model.Password,
+                ConfirmPassword = model.ConfirmPassword
+            };
+
+            var result = await _authService.RegisterAsync(dto);
+
+            if (result.IsFailure)
+            {
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Message);
+
+                return View(model);
+            }
+
+            return LocalRedirect("/");
         }
 
         [HttpGet]
