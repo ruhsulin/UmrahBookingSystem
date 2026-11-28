@@ -1,0 +1,21 @@
+﻿@model UmrahBookingSystem.Web.Areas.Admin.ViewModels.Services.EditServiceViewModel
+
+@{
+    ViewData["Title"] = "Edit service";
+}
+
+<form asp-action="Edit" method="post" class="card card-body" style="max-width: 640px">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="ServiceName" class="form-label">Service name</label>
+        <input asp-for="ServiceName" class="form-control" maxlength="250" />
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
