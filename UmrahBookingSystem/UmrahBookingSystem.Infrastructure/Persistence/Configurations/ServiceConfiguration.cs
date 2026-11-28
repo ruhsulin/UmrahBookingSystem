@@ -15,8 +15,13 @@ namespace UmrahBookingSystem.Infrastructure.Persistence.Configurations
             builder.HasKey(s => s.Id);
 
             builder.Property(s => s.ServiceName)
-                .IsRequired()
-                .HasMaxLength(250);
+                    .IsRequired()
+                    .HasMaxLength(250);
+
+            builder.HasIndex(s => s.ServiceName)
+                    .IsUnique()
+                    .HasFilter("[IsDeleted] = 0")
+                    .HasDatabaseName("IX_Services_ServiceName");
         }
     }
 }
